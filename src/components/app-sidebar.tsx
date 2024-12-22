@@ -13,6 +13,7 @@ import { MdOutlineRoute } from 'react-icons/md';
 import { AiFillDatabase, AiFillSetting } from 'react-icons/ai';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 // Menu items.
 const items = [
@@ -60,7 +61,7 @@ export default function AppSidebar() {
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild size="lg" className="h-10">
-                <a
+                <Link
                   href={item.url}
                   className={`flex gap-2 py-2 px-4 rounded-lg ${
                     pathname === item.url ? 'bg-blue-100 ' : 'text-gray-500'
@@ -82,7 +83,7 @@ export default function AppSidebar() {
                   >
                     {item.title}
                   </span>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
