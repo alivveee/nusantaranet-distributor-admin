@@ -14,7 +14,8 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import InputField from '@/components/input-field';
 import { LuMapPinned } from 'react-icons/lu';
-import { IoIosAddCircleOutline } from 'react-icons/io';
+import { useState } from 'react';
+import { ProductSelector } from './products-selector';
 
 const typeOptions = [
   { value: '1', label: 'Pengiriman' },
@@ -26,12 +27,12 @@ const custOptions = [
   { value: '3', label: 'PT. GEHAI' },
   { value: '4', label: 'PT. JIKEL' },
 ];
-const productOptions = [
-  { value: '1', label: 'Produk 1' },
-  { value: '2', label: 'Produk 2' },
-  { value: '3', label: 'Produk 3' },
-  { value: '4', label: 'Produk 4' },
-];
+
+export interface Product {
+  id: string;
+  name: string;
+  quantity: number;
+}
 
 const taskSchema = z.object({
   type: z.string().nonempty('Jenis Tugas harus diisi'),
@@ -44,6 +45,8 @@ const taskSchema = z.object({
 type TaskForm = z.infer<typeof taskSchema>;
 
 export default function AddTaskDialog() {
+  const [products, setProducts] = useState<Product[]>([]);
+
   const methods = useForm<TaskForm>({
     resolver: zodResolver(taskSchema),
     defaultValues: {
@@ -55,6 +58,10 @@ export default function AddTaskDialog() {
     },
   });
 
+  const handleProductChange = (updatedProducts: Product[]) => {
+    setProducts(updatedProducts);
+  };
+
   const onSubmit = (data: TaskForm) => {
     console.log('Form Submitted:', data);
   };
@@ -64,7 +71,7 @@ export default function AddTaskDialog() {
       <DialogTrigger asChild>
         <Button className="bg-blue-500 text-white">Tambah Tugas</Button>
       </DialogTrigger>
-      <DialogContent className="max-w-[640px]">
+      <DialogContent className="max-w-[680px]">
         <DialogHeader className="border-b border-gray-300">
           <DialogTitle>Tambah Tugas</DialogTitle>
         </DialogHeader>
@@ -102,18 +109,10 @@ export default function AddTaskDialog() {
               />
               <div className="w-full flex justify-between">
                 <div className="w-full pr-4 flex gap-2 items-end">
-                  <SelectField
-                    name="product"
-                    label="Tambah Produk"
-                    placeholder="Pilih produk"
-                    options={productOptions}
+                  <ProductSelector
+                    products={products}
+                    onProductsChange={handleProductChange}
                   />
-                  <button
-                    type="button"
-                    className="flex items-center justify-center gap-1 bg-blue-500 text-white h-[38.5px] w-[44px] mb-[1px] rounded-sm"
-                  >
-                    <IoIosAddCircleOutline size={24} />
-                  </button>
                 </div>
                 <div className="flex gap-3 mt-2 items-end">
                   <DialogClose asChild>

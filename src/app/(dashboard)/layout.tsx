@@ -12,7 +12,7 @@ export default function DashboardLayout({
       <AppSidebar />
       <div className="flex w-full flex-col h-screen">
         <Header />
-        <main className="grid flex-1 items-start gap-2 p-4 sm:px-6 sm:py-0 md:gap-4 bg-muted/40">
+        <main className="grid flex-1 items-start bg-muted/40">
           {children}
         </main>
       </div>

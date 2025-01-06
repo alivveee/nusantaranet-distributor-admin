@@ -24,7 +24,7 @@ const items = [
   },
   {
     title: 'Rute',
-    url: '/route',
+    url: '/route/to-do',
     icon: MdOutlineRoute,
   },
   {
@@ -41,8 +41,9 @@ const items = [
 
 export default function AppSidebar() {
   const pathname = usePathname();
+
   return (
-    <Sidebar className="w-[256px]">
+    <Sidebar className="w-[256px] shadow-right z-50">
       <SidebarHeader>
         <div className="flex gap-2 justify-center p-4 mb-1">
           <Image
@@ -64,19 +65,23 @@ export default function AppSidebar() {
                 <Link
                   href={item.url}
                   className={`flex gap-2 py-2 px-4 rounded-lg ${
-                    pathname === item.url ? 'bg-blue-100 ' : 'text-gray-500'
+                    pathname.startsWith(`/${item.url.split('/')[1]}`)
+                      ? 'bg-blue-100 '
+                      : 'text-gray-500'
                   }`}
                 >
                   <item.icon
                     style={{
                       width: '22px',
                       height: '22px',
-                      color: pathname === item.url ? '#0C7FDA' : '#6B7280',
+                      color: pathname.startsWith(`/${item.url.split('/')[1]}`)
+                        ? '#0C7FDA'
+                        : '#6B7280',
                     }}
                   />
                   <span
                     className={
-                      pathname === item.url
+                      pathname.startsWith(`/${item.url.split('/')[1]}`)
                         ? 'font-semibold text-[#0C7FDA]'
                         : 'font-medium text-gray-500'
                     }
