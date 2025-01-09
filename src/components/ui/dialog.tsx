@@ -30,7 +30,7 @@ const DialogContent = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <DialogPortal>
     <DialogOverlay className="overflow-y-auto">
-      <div className="min-h-[100dvh] py-16 flex items-center justify-center">
+      <div className="min-h-[100dvh] py-6 flex items-center justify-center">
         <DialogPrimitive.Content
           ref={ref}
           className={cn(

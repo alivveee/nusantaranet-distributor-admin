@@ -5,7 +5,7 @@ import MenuItems from './menu-items';
 
 export default function Header() {
   return (
-    <header className="w-full h-[96px] px-6 flex justify-between items-center p-4 border-b sticky top-0 bg-[#F5F5F5] z-10">
+    <header className="w-full px-6 py-4 flex justify-between items-center border-b sticky top-0 bg-[#F5F5F5] z-10">
       <MenuItems />
       <div className="flex gap-1 items-center">
         <Avatar className="size-[42px]">

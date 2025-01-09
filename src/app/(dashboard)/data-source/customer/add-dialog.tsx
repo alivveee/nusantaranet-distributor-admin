@@ -1,6 +1,4 @@
 'use client';
-
-import SelectField from '@/components/select-field';
 import { Button } from '@/components/ui/button';
 import {
   DialogClose,
@@ -14,54 +12,26 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import InputField from '@/components/input-field';
 import { LuMapPinned } from 'react-icons/lu';
-import { useState } from 'react';
-import { ProductSelector } from './products-selector';
-import DatePickerField from '@/components/date-picker';
-
-const typeOptions = [
-  { value: '1', label: 'Pengiriman' },
-  { value: '2', label: 'Kanvassing' },
-];
-const custOptions = [
-  { value: '1', label: 'PT. ABECE' },
-  { value: '2', label: 'PT. DEEEF' },
-  { value: '3', label: 'PT. GEHAI' },
-  { value: '4', label: 'PT. JIKEL' },
-];
-
-export interface Product {
-  id: string;
-  name: string;
-  quantity: number;
-}
 
 const taskSchema = z.object({
-  type: z.string().nonempty('Jenis Tugas harus diisi'),
-  customer: z.string().nonempty('Customer harus diisi'),
+  customerName: z.string().nonempty('Nama customer harus diisi'),
+  phone: z.string().nonempty('Nomor telepon harus diisi'),
   coordinate: z.string().nonempty('Koordinat harus diisi'),
   address: z.string().nonempty('Alamat harus diisi'),
-  product: z.string(),
 });
 
 type TaskForm = z.infer<typeof taskSchema>;
 
-export default function AddTaskDialog() {
-  const [products, setProducts] = useState<Product[]>([]);
-
+export default function AddCustomerDialog() {
   const methods = useForm<TaskForm>({
     resolver: zodResolver(taskSchema),
     defaultValues: {
-      type: '',
-      customer: '',
+      customerName: '',
+      phone: '',
       coordinate: '',
       address: '',
-      product: '',
     },
   });
-
-  const handleProductChange = (updatedProducts: Product[]) => {
-    setProducts(updatedProducts);
-  };
 
   const onSubmit = (data: TaskForm) => {
     console.log('Form Submitted:', data);
@@ -70,11 +40,11 @@ export default function AddTaskDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="bg-blue-500 text-white">Tambah Tugas</Button>
+        <Button className="bg-blue-500 text-white">Tambah Customer</Button>
       </DialogTrigger>
       <DialogContent className="max-w-[680px]">
         <DialogHeader className="border-b border-gray-300">
-          <DialogTitle>Tambah Tugas</DialogTitle>
+          <DialogTitle>Tambah Customer</DialogTitle>
         </DialogHeader>
         <DialogMainContent>
           <FormProvider {...methods}>
@@ -82,25 +52,17 @@ export default function AddTaskDialog() {
               onSubmit={methods.handleSubmit(onSubmit)}
               className="w-full flex flex-col gap-3"
             >
-              <div className="grid grid-cols-2 gap-4">
-                <DatePickerField
-                  name="date"
-                  label="Tanggal Tugas"
-                  placeholder="Pilih Tanggal Tugas"
-                />
-                <SelectField
-                  name="type"
-                  label="Jenis Tugas"
-                  placeholder="Pilih Jenis Tugas"
-                  options={typeOptions}
-                />
-              </div>
-
-              <SelectField
-                name="customer"
-                label="Customer"
-                placeholder="Pilih Customer"
-                options={custOptions}
+              <InputField
+                name="customerName"
+                label="Nama Customer"
+                type="text"
+                placeholder="Masukkan nama customer"
+              />
+              <InputField
+                name="phone"
+                label="Nomor Telepon"
+                type="text"
+                placeholder="Masukkan nomor telepon"
               />
               <InputField
                 name="coordinate"
@@ -116,14 +78,7 @@ export default function AddTaskDialog() {
                 type="text"
                 placeholder="Masukkan titik alamat"
               />
-              <div className="w-full flex justify-between">
-                <div className="w-full pr-4 flex gap-2 items-end">
-                  <ProductSelector
-                    products={products}
-                    onProductsChange={handleProductChange}
-                  />
-                </div>
-                <div className="flex gap-3 mt-2 items-end">
+                <div className="flex gap-3 mt-2 justify-center">
                   <DialogClose asChild>
                     <Button
                       type="button"
@@ -132,7 +87,6 @@ export default function AddTaskDialog() {
                       Batal
                     </Button>
                   </DialogClose>
-
                   <Button
                     type="submit"
                     className=" w-[120px] bg-blue-500 text-white"
@@ -140,7 +94,6 @@ export default function AddTaskDialog() {
                     Simpan
                   </Button>
                 </div>
-              </div>
             </form>
           </FormProvider>
         </DialogMainContent>

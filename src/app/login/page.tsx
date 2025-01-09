@@ -35,54 +35,54 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen grid grid-cols-2 place-items-center p-[10vh] bg-blue-500">
-      <Card className="w-[460px] p-2">
-        <CardHeader className="md:items-center">
-          <CardTitle className="text-2xl">Login menggunakan akun</CardTitle>
-          <CardDescription>
-            Masukkan username dan kata sandi Anda untuk masuk
-          </CardDescription>
-        </CardHeader>
-        <CardFooter>
-          <FormProvider {...methods}>
-            <form
-              onSubmit={methods.handleSubmit(onSubmit)}
-              className="w-full flex flex-col gap-3 items-center"
-            >
-              <InputField
-                name="username"
-                label="Username"
-                type="text"
-                placeholder="Masukkan username Anda"
-              />
-              <InputField
-                name="password"
-                label="Password"
-                type="password"
-                placeholder="Masukkan password Anda"
-              />
-              <Button
-                type="submit"
-                size="lg"
-                className="w-full m-2 bg-blue-500"
+    <div className="h-screen flex items-center justify-center bg-gray-100">
+      <Card className="w-[860px] grid grid-cols-2 items-center h-max overflow-hidden shadow-md">
+        <div className='p-4'>
+          <CardHeader className="md:items-center">
+            <CardTitle className="text-2xl">Selamat Datang</CardTitle>
+            <CardDescription>
+              Login menggunakan akun Anda untuk masuk
+            </CardDescription>
+          </CardHeader>
+          <CardFooter>
+            <FormProvider {...methods}>
+              <form
+                onSubmit={methods.handleSubmit(onSubmit)}
+                className="w-full flex flex-col gap-3 items-center"
               >
-                Login
-              </Button>
-            </form>
-          </FormProvider>
-        </CardFooter>
-      </Card>
-      <div className="flex flex-col items-center gap-5">
-        <div className="flex justify-center items-center rounded-full w-40 h-40 bg-white">
-          <Avatar className="w-36 h-36">
-            <AvatarImage src="/NN Logo.jpeg" />
-            <AvatarFallback>nusantara network logo</AvatarFallback>
-          </Avatar>
+                <InputField
+                  name="username"
+                  label="Username"
+                  type="text"
+                  placeholder="Masukkan username Anda"
+                />
+                <InputField
+                  name="password"
+                  label="Password"
+                  type="password"
+                  placeholder="Masukkan password Anda"
+                />
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full m-2 bg-blue-500"
+                >
+                  Login
+                </Button>
+              </form>
+            </FormProvider>
+          </CardFooter>
         </div>
-        <h1 className="text-center text-3xl font-bold text-white">
-          Nusantara Network
-        </h1>
-      </div>
+        <div className="flex flex-col h-full items-center justify-center gap-4 bg-gray-200">
+          <div className="flex justify-center items-center rounded-full w-40 h-40 bg-white">
+            <Avatar className="size-[140px]">
+              <AvatarImage src="/NN Logo.jpeg" />
+              <AvatarFallback>nusantara network logo</AvatarFallback>
+            </Avatar>
+          </div>
+          <h1 className="text-center text-xl font-bold">Nusantara Network</h1>
+        </div>
+      </Card>
     </div>
   );
 }

@@ -29,12 +29,12 @@ const items = [
   },
   {
     title: 'Sumber Data',
-    url: '/data-source',
+    url: '/data-source/customer',
     icon: AiFillDatabase,
   },
   {
     title: 'Pengaturan',
-    url: '/settings',
+    url: '/settings/users',
     icon: AiFillSetting,
   },
 ];

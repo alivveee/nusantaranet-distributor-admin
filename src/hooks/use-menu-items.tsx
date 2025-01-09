@@ -13,10 +13,10 @@ const routeItems: MenuItem[] = [
   { title: 'Done', url: '/route/done' },
 ];
 const dataSourceItems: MenuItem[] = [
-  { title: 'Customer', url: '#' },
-  { title: 'Produk', url: '#' },
+  { title: 'Customer', url: '/data-source/customer' },
+  { title: 'Produk', url: '/data-source/product' },
 ];
-const settingsItems: MenuItem[] = [{ title: 'User', url: '#' }];
+const settingsItems: MenuItem[] = [{ title: 'Users', url: '/settings/users' }];
 
 export function useMenuItems() {
   const pathname = usePathname();
