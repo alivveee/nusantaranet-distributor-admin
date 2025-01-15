@@ -1,6 +1,6 @@
 'use client';
-import { useState } from 'react';
-import { RouteDetails } from '../route-detail';
+import { useEffect, useState } from 'react';
+import useRouteStore from '../store/useRouteStore';
 import ItemRouteDone from './item-route-done';
 
 // Sample data - in a real app, this would come from an API or database
@@ -129,48 +129,42 @@ const routes = [
 ];
 
 export default function DoneRoutePage() {
+  const { selectedRoute, setSelectedRoute } = useRouteStore();
   const [selectedRouteId, setSelectedRouteId] = useState<string | null>(null);
 
-  const selectedRoute =
+  const tSelectedRoute =
     routes.find((route) => route.id === selectedRouteId) || null;
 
+  useEffect(
+    () => setSelectedRoute(tSelectedRoute),
+    [tSelectedRoute, setSelectedRoute]
+  );
+
+  useEffect(() => {
+    if (selectedRoute === null) {
+      setSelectedRouteId(null);
+    }
+  }, [selectedRoute]);
+
   return (
-    <div className="w-full h-full flex relative">
-      {/* Sidebar */}
-      <div className="w-[310px] h-full flex flex-col border-r">
-        <header className="p-4 ">
-          <h1 className="text-lg font-semibold">
-            Total Kunjungan ({routes.length})
-          </h1>
-        </header>
-        {/* Main content of the sidebar with scroll */}
-        <main className="flex-1 overflow-y-auto">
-          <div className="h-max">
-            {routes.map((route) => (
-              <ItemRouteDone
-                key={route.id}
-                route={route}
-                onSelect={setSelectedRouteId}
-              />
-            ))}
-          </div>
-        </main>
-      </div>
-
-      {/* Content area */}
-      <div className="flex-1 bg-slate-300">
-        <div className="h-full flex items-center justify-center text-gray-500">
-          On Going
+    <div className="w-[310px] h-full flex flex-col border-r">
+      <header className="p-4 ">
+        <h1 className="text-lg font-semibold">
+          Total Kunjungan ({routes.length})
+        </h1>
+      </header>
+      {/* Main content of the sidebar with scroll */}
+      <main className="flex-1 overflow-y-auto">
+        <div className="h-max">
+          {routes.map((route) => (
+            <ItemRouteDone
+              key={route.id}
+              route={route}
+              onSelect={setSelectedRouteId}
+            />
+          ))}
         </div>
-      </div>
-
-      {/* Footer or additional content */}
-      <div className="absolute bottom-0 left-0 right-0">
-        <RouteDetails
-          route={selectedRoute}
-          onClose={() => setSelectedRouteId(null)}
-        />
-      </div>
+      </main>
     </div>
   );
 }
