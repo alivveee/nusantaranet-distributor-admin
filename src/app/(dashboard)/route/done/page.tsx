@@ -1,7 +1,7 @@
 'use client';
-import { useEffect, useState } from 'react';
-import useRouteStore from '../store/useRouteStore';
+import { useEffect, useMemo, useState } from 'react';
 import ItemRouteDone from './item-route-done';
+import useRouteStore from '../_store/useRouteStore';
 
 // Sample data - in a real app, this would come from an API or database
 const routes = [
@@ -129,12 +129,13 @@ const routes = [
 ];
 
 export default function DoneRoutePage() {
-  const { selectedRoute, setSelectedRoute } = useRouteStore();
+  const { selectedRoute, setSelectedRoute, setWaypoints } = useRouteStore();
   const [selectedRouteId, setSelectedRouteId] = useState<string | null>(null);
 
-  const tSelectedRoute =
-    routes.find((route) => route.id === selectedRouteId) || null;
-
+  const tSelectedRoute = useMemo(
+    () => routes.find((route) => route.id === selectedRouteId) || null,
+    [selectedRouteId]
+  );
   useEffect(
     () => setSelectedRoute(tSelectedRoute),
     [tSelectedRoute, setSelectedRoute]
@@ -145,6 +146,8 @@ export default function DoneRoutePage() {
       setSelectedRouteId(null);
     }
   }, [selectedRoute]);
+
+  useEffect(() => setWaypoints(null), [setWaypoints]);
 
   return (
     <div className="w-[310px] h-full flex flex-col border-r">

@@ -1,14 +1,14 @@
 'use client';
+import useRouteStore from './_store/useRouteStore';
 import GoogleMapComponent from './google-maps';
 import { RouteDetails } from './route-detail';
-import useRouteStore from './store/useRouteStore';
 
 interface RouteLayoutProps {
   children: React.ReactNode; // sidebar
 }
 
 export default function RouteLayout({ children }: RouteLayoutProps) {
-  const { selectedRoute, setSelectedRoute } = useRouteStore();
+  const { selectedRoute, setSelectedRoute, setWaypoints } = useRouteStore();
   return (
     <div className="w-full h-full flex relative overflow-hidden">
       {/* Sidebar */}
@@ -22,7 +22,10 @@ export default function RouteLayout({ children }: RouteLayoutProps) {
       <div className="absolute bottom-0 left-0 right-0">
         <RouteDetails
           route={selectedRoute}
-          onClose={() => setSelectedRoute(null)}
+          onClose={() => {
+            setWaypoints(null);
+            setSelectedRoute(null);
+          }}
         />
       </div>
     </div>

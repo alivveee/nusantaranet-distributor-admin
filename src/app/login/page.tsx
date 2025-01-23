@@ -13,9 +13,10 @@ import {
 import { useForm, FormProvider } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { login } from './actions';
 
 const loginSchema = z.object({
-  username: z.string().nonempty('Username harus diisi'),
+  email: z.string().nonempty('Username harus diisi'),
   password: z.string().min(6, 'Password minimal 6 karakter'),
 });
 
@@ -25,19 +26,20 @@ export default function LoginPage() {
   const methods = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      username: '',
+      email: '',
       password: '',
     },
   });
 
-  const onSubmit = (data: LoginForm) => {
-    console.log('Form Submitted:', data);
+  const onSubmit = async (formData: LoginForm) => {
+    const { error } = await login(formData);
+    console.log(error);
   };
 
   return (
     <div className="h-screen flex items-center justify-center bg-gray-100">
       <Card className="w-[860px] grid grid-cols-2 items-center h-max overflow-hidden shadow-md">
-        <div className='p-4'>
+        <div className="p-4">
           <CardHeader className="md:items-center">
             <CardTitle className="text-2xl">Selamat Datang</CardTitle>
             <CardDescription>
@@ -51,10 +53,10 @@ export default function LoginPage() {
                 className="w-full flex flex-col gap-3 items-center"
               >
                 <InputField
-                  name="username"
-                  label="Username"
-                  type="text"
-                  placeholder="Masukkan username Anda"
+                  name="email"
+                  label="Email"
+                  type="email"
+                  placeholder="Masukkan email Anda"
                 />
                 <InputField
                   name="password"

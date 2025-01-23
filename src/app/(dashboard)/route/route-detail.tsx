@@ -27,7 +27,6 @@ interface RouteDetailsProps {
 
 export function RouteDetails({ route, onClose }: RouteDetailsProps) {
   if (!route) return null;
-
   return (
     <AnimatePresence>
       {route && (

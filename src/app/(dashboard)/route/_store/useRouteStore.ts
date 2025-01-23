@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import createRouteState, { RouteState } from './slicing/route.slice';
+import createRouteState, { RouteState } from '../_store/slicing/route.slice';
 
 interface BoundSliceTypes extends RouteState {
   default: null;
