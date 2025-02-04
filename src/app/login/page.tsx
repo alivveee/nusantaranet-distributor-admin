@@ -1,40 +1,20 @@
-'use client';
-
-import InputField from '@/components/input-field';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import {
   Card,
+  CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { useForm, FormProvider } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { login } from './actions';
+import LoginForm from './components/login-form';
+import { redirect } from 'next/navigation';
+import readUserSession from '@/lib/actions';
+export default async function LoginPage() {
+  const { data: userSession } = await readUserSession();
 
-const loginSchema = z.object({
-  email: z.string().nonempty('Username harus diisi'),
-  password: z.string().min(6, 'Password minimal 6 karakter'),
-});
-
-type LoginForm = z.infer<typeof loginSchema>;
-
-export default function LoginPage() {
-  const methods = useForm<LoginForm>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  });
-
-  const onSubmit = async (formData: LoginForm) => {
-    const { error } = await login(formData);
-    console.log(error);
-  };
+  if (userSession.session) {
+    return redirect('/tasks');
+  }
 
   return (
     <div className="h-screen flex items-center justify-center bg-gray-100">
@@ -46,34 +26,9 @@ export default function LoginPage() {
               Login menggunakan akun Anda untuk masuk
             </CardDescription>
           </CardHeader>
-          <CardFooter>
-            <FormProvider {...methods}>
-              <form
-                onSubmit={methods.handleSubmit(onSubmit)}
-                className="w-full flex flex-col gap-3 items-center"
-              >
-                <InputField
-                  name="email"
-                  label="Email"
-                  type="email"
-                  placeholder="Masukkan email Anda"
-                />
-                <InputField
-                  name="password"
-                  label="Password"
-                  type="password"
-                  placeholder="Masukkan password Anda"
-                />
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="w-full m-2 bg-blue-500"
-                >
-                  Login
-                </Button>
-              </form>
-            </FormProvider>
-          </CardFooter>
+          <CardContent>
+            <LoginForm />
+          </CardContent>
         </div>
         <div className="flex flex-col h-full items-center justify-center gap-4 bg-gray-200">
           <div className="flex justify-center items-center rounded-full w-40 h-40 bg-white">

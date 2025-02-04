@@ -1,12 +1,21 @@
 import AppSidebar from '@/components/app-sidebar';
 import Header from '@/components/header/header';
 import { SidebarProvider } from '@/components/ui/sidebar';
+import readUserSession from '@/lib/actions';
+import { redirect } from 'next/navigation';
 
-export default function DashboardLayout({
+
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { data: userSession } = await readUserSession();
+
+  if (!userSession.session) {
+    return redirect('/login');
+  }
+
   return (
     <div className="flex h-screen w-full">
       <SidebarProvider>

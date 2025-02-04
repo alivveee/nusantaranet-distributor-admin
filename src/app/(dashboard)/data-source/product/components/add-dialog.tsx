@@ -11,29 +11,44 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import InputField from '@/components/input-field';
+import { useTransition } from 'react';
+import addProduct from '../actions';
+import { toast } from 'sonner';
 
 const productchema = z.object({
-  productName: z.string().nonempty('Nama produk harus diisi'),
+  name: z.string().nonempty('Nama produk harus diisi'),
 });
 
 type TaskForm = z.infer<typeof productchema>;
 
-export default function AddCustomerDialog() {
+export default function AddProductDialog() {
+  const [isPending, startTransition] = useTransition();
   const methods = useForm<TaskForm>({
     resolver: zodResolver(productchema),
     defaultValues: {
-      productName: '',
+      name: '',
     },
   });
 
   const onSubmit = (data: TaskForm) => {
-    console.log('Form Submitted:', data);
+    startTransition(async () => {
+      const result = await addProduct(data);
+      const { error } = JSON.parse(result);
+
+      if (error) {
+        toast('Gagal menambahkan produk', {
+          description: error.message,
+        });
+      } else {
+        toast('Berhasil menambahkan produk');
+      }
+    });
   };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="bg-blue-500 text-white">Tambah Tugas</Button>
+        <Button className="bg-blue-500 text-white">Tambah Produk</Button>
       </DialogTrigger>
       <DialogContent className="max-w-[680px]">
         <DialogHeader className="border-b border-gray-300">
@@ -46,28 +61,29 @@ export default function AddCustomerDialog() {
               className="w-full flex flex-col gap-3"
             >
               <InputField
-                name="productName"
+                name="name"
                 label="Nama Produk"
                 type="text"
                 placeholder="Masukkan nama produk"
               />
-                <div className="flex gap-3 mt-2 justify-center">
-                  <DialogClose asChild>
-                    <Button
-                      type="button"
-                      className="w-[120px] outline outline-1 outline-blue-500 text-blue-500 hover:bg-blue-100 bg-white"
-                    >
-                      Batal
-                    </Button>
-                  </DialogClose>
-
+              <div className="flex gap-3 mt-2 justify-center">
+                <DialogClose asChild>
                   <Button
-                    type="submit"
-                    className=" w-[120px] bg-blue-500 text-white"
+                    type="button"
+                    className="w-[120px] outline outline-1 outline-blue-500 text-blue-500 hover:bg-blue-100 bg-white"
                   >
-                    Simpan
+                    Batal
                   </Button>
-                </div>
+                </DialogClose>
+
+                <Button
+                  type="submit"
+                  className=" w-[120px] bg-blue-500 text-white"
+                  disabled={isPending}
+                >
+                  Simpan
+                </Button>
+              </div>
             </form>
           </FormProvider>
         </DialogMainContent>
