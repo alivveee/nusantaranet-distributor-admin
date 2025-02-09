@@ -35,7 +35,7 @@ const InputField: React.FC<InputFieldProps> = ({
       control={control}
       render={({ field, fieldState }) => (
         <FormItem className="flex flex-col w-full space-y-1.5">
-          <Label htmlFor={name} className="text-gray-700">
+          <Label htmlFor={name} className="text-gray-700 font-semibold">
             {label}
           </Label>
           <FormControl>
@@ -52,7 +52,7 @@ const InputField: React.FC<InputFieldProps> = ({
               {iconButton && (
                 <Button
                   type="button"
-                  className="absolute inset-y-0 right-0 flex items-center px-2 w-[42px] bg-gray-700"
+                  className="absolute inset-y-0 right-0 flex items-center h-9 w-10 bg-gray-700"
                   onClick={onIconClick}
                 >
                   {iconButton}

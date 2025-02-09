@@ -1,8 +1,9 @@
 'use server';
-import { createClientReadOnly } from '../supabase/server';
+
+import { createClient } from "../supabase/server";
 
 export default async function readUserSession() {
-  const supabase = await createClientReadOnly();
+  const supabase = await createClient();
 
   return supabase.auth.getSession();
 }

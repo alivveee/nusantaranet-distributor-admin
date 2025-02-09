@@ -76,7 +76,7 @@ const DialogMainContent = ({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn('w-full p-6', className)} {...props} />
+  <div className={cn('w-full py-4 px-6', className)} {...props} />
 );
 DialogMainContent.displayName = 'DialogMainContent';
 

@@ -75,9 +75,9 @@ export function ProductSelector({
           variant="outline"
           size="icon"
           onClick={addProduct}
-          className="shrink-0"
+          className="shrink-0 h-9 w-9"
         >
-          <Plus className="h-4 w-4" />
+          <Plus />
         </Button>
       </div>
 

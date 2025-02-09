@@ -36,7 +36,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
       control={control}
       render={({ field, fieldState }) => (
         <FormItem className="flex flex-col w-full space-y-1.5">
-          <Label htmlFor={name} className="text-gray-700">
+          <Label htmlFor={name} className="text-gray-700 font-semibold">
             {label}
           </Label>
           <FormControl>

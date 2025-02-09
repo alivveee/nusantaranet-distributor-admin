@@ -1,5 +1,5 @@
-import AddCustomerDialog from './add-dialog';
-import CustomersTable from './customers-table';
+import AddCustomerDialog from './components/add-dialog';
+import CustomersTable from './components/customers-table';
 
 export default function TaskPage() {
   return (

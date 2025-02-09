@@ -1,21 +1,20 @@
 'use client';
-import InputField from '@/components/input-field';
 import { Button } from '@/components/ui/button';
 import {
-  Dialog,
   DialogClose,
-  DialogContent,
   DialogHeader,
   DialogMainContent,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useState, useTransition } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { toast } from 'sonner';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { useForm, FormProvider } from 'react-hook-form';
 import { z } from 'zod';
-import addProduct from '../actions';
+import { zodResolver } from '@hookform/resolvers/zod';
+import InputField from '@/components/input-field';
+import { useRef, useTransition } from 'react';
+import { updateProduct } from '../actions';
+import { toast } from 'sonner';
+import { IProduct } from '@/lib/types';
 
 const productchema = z.object({
   name: z.string().nonempty('Nama produk harus diisi'),
@@ -23,49 +22,45 @@ const productchema = z.object({
 
 type TaskForm = z.infer<typeof productchema>;
 
-export default function AddProductDialog() {
+export default function EditProductDialog({
+  Trigger,
+  product,
+}: {
+  Trigger: React.ReactNode;
+  product: IProduct;
+}) {
   const [isPending, startTransition] = useTransition();
-  const [isOpen, setIsOpen] = useState(false);
+  const dialogRef = useRef<HTMLButtonElement>(null);
 
   const methods = useForm<TaskForm>({
     resolver: zodResolver(productchema),
     defaultValues: {
-      name: '',
+      name: product.name,
     },
   });
 
   const onSubmit = (data: TaskForm) => {
     startTransition(async () => {
-      const result = await addProduct(data);
+      const result = await updateProduct(product.id, data);
       const { error } = JSON.parse(result);
 
       if (error) {
-        toast('Gagal menambahkan produk', {
+        toast('Gagal mengupdate produk', {
           description: error.message,
         });
       } else {
-        toast('Berhasil menambahkan produk');
-        methods.reset(); // Reset form setelah berhasil menambahkan customer
-        setIsOpen(false); // Tutup dialog
+        toast('Berhasil mengupdate produk');
+        dialogRef.current?.click();
       }
     });
   };
 
-  const onOpenChange = (open: boolean) => {
-    if (!open) {
-      methods.reset(); // Reset form ketika dialog tertutup
-    }
-    setIsOpen(open);
-  };
-
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>
-        <Button className="bg-blue-500 text-white">Tambah Produk</Button>
-      </DialogTrigger>
+    <Dialog>
+      <DialogTrigger asChild>{Trigger}</DialogTrigger>
       <DialogContent className="max-w-[680px]">
         <DialogHeader className="border-b border-gray-300">
-          <DialogTitle>Tambah Produk</DialogTitle>
+          <DialogTitle>Edit Produk</DialogTitle>
         </DialogHeader>
         <DialogMainContent>
           <FormProvider {...methods}>
@@ -84,6 +79,7 @@ export default function AddProductDialog() {
                   <Button
                     type="button"
                     className="w-[120px] outline outline-1 outline-blue-500 text-blue-500 hover:bg-blue-100 bg-white"
+                    ref={dialogRef}
                   >
                     Batal
                   </Button>

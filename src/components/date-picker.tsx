@@ -40,7 +40,7 @@ const DatePickerField: React.FC<DatePickerFieldProps> = ({
       render={({ field, fieldState }) => (
         <FormItem className="flex flex-col w-full space-y-1.5">
           {/* Label */}
-          <Label htmlFor={name} className="text-gray-700">
+          <Label htmlFor={name} className="text-gray-700 font-semibold">
             {label}
           </Label>
           <FormControl>
@@ -49,7 +49,7 @@ const DatePickerField: React.FC<DatePickerFieldProps> = ({
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
-                  className="w-full flex justify-between items-center text-left font-normal"
+                  className="w-full flex justify-between items-center text-left font-normal h-9"
                 >
                   {field.value ? (
                     // Gunakan locale Indonesia

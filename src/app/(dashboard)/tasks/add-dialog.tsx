@@ -108,7 +108,6 @@ export default function AddTaskDialog() {
                 type="text"
                 placeholder="Masukkan titik koordinat"
                 iconButton={<LuMapPinned />}
-                onIconClick={() => alert('Search clicked!')}
               />
               <InputField
                 name="address"

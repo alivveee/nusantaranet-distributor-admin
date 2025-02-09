@@ -12,9 +12,12 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import InputField from '@/components/input-field';
 import { LuMapPinned } from 'react-icons/lu';
+import { useTransition, useState } from 'react';
+import addCustomer from '../actions';
+import { toast } from 'sonner';
 
 const taskSchema = z.object({
-  customerName: z.string().nonempty('Nama customer harus diisi'),
+  name: z.string().nonempty('Nama customer harus diisi'),
   phone: z.string().nonempty('Nomor telepon harus diisi'),
   coordinate: z.string().nonempty('Koordinat harus diisi'),
   address: z.string().nonempty('Alamat harus diisi'),
@@ -23,10 +26,13 @@ const taskSchema = z.object({
 type TaskForm = z.infer<typeof taskSchema>;
 
 export default function AddCustomerDialog() {
+  const [isPending, startTransition] = useTransition();
+  const [isOpen, setIsOpen] = useState(false);
+
   const methods = useForm<TaskForm>({
     resolver: zodResolver(taskSchema),
     defaultValues: {
-      customerName: '',
+      name: '',
       phone: '',
       coordinate: '',
       address: '',
@@ -34,11 +40,31 @@ export default function AddCustomerDialog() {
   });
 
   const onSubmit = (data: TaskForm) => {
-    console.log('Form Submitted:', data);
+    startTransition(async () => {
+      const result = await addCustomer(data);
+      const { error } = JSON.parse(result);
+
+      if (error) {
+        toast('Gagal menambahkan customer', {
+          description: error.message,
+        });
+      } else {
+        toast('Berhasil menambahkan customer');
+        methods.reset(); // Reset form setelah berhasil menambahkan customer
+        setIsOpen(false); // Tutup dialog
+      }
+    });
+  };
+
+  const onOpenChange = (open: boolean) => {
+    if (!open) {
+      methods.reset(); // Reset form ketika dialog tertutup
+    }
+    setIsOpen(open);
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         <Button className="bg-blue-500 text-white">Tambah Customer</Button>
       </DialogTrigger>
@@ -53,7 +79,7 @@ export default function AddCustomerDialog() {
               className="w-full flex flex-col gap-3"
             >
               <InputField
-                name="customerName"
+                name="name"
                 label="Nama Customer"
                 type="text"
                 placeholder="Masukkan nama customer"
@@ -61,7 +87,7 @@ export default function AddCustomerDialog() {
               <InputField
                 name="phone"
                 label="Nomor Telepon"
-                type="text"
+                type="number"
                 placeholder="Masukkan nomor telepon"
               />
               <InputField
@@ -70,7 +96,6 @@ export default function AddCustomerDialog() {
                 type="text"
                 placeholder="Masukkan titik koordinat"
                 iconButton={<LuMapPinned />}
-                onIconClick={() => alert('Search clicked!')}
               />
               <InputField
                 name="address"
@@ -78,22 +103,23 @@ export default function AddCustomerDialog() {
                 type="text"
                 placeholder="Masukkan titik alamat"
               />
-                <div className="flex gap-3 mt-2 justify-center">
-                  <DialogClose asChild>
-                    <Button
-                      type="button"
-                      className="w-[120px] outline outline-1 outline-blue-500 text-blue-500 hover:bg-blue-100 bg-white"
-                    >
-                      Batal
-                    </Button>
-                  </DialogClose>
+              <div className="flex gap-3 mt-2 justify-center">
+                <DialogClose asChild>
                   <Button
-                    type="submit"
-                    className=" w-[120px] bg-blue-500 text-white"
+                    type="button"
+                    className="w-[120px] outline outline-1 outline-blue-500 text-blue-500 hover:bg-blue-100 bg-white"
                   >
-                    Simpan
+                    Batal
                   </Button>
-                </div>
+                </DialogClose>
+                <Button
+                  type="submit"
+                  className=" w-[120px] bg-blue-500 text-white"
+                  disabled={isPending}
+                >
+                  Simpan
+                </Button>
+              </div>
             </form>
           </FormProvider>
         </DialogMainContent>
