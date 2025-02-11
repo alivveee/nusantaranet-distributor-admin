@@ -1,21 +1,23 @@
 'use client';
+import InputField from '@/components/input-field';
 import { Button } from '@/components/ui/button';
 import {
+  Dialog,
   DialogClose,
+  DialogContent,
   DialogHeader,
   DialogMainContent,
   DialogTitle,
+  DialogTrigger,
 } from '@/components/ui/dialog';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { useForm, FormProvider } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import InputField from '@/components/input-field';
-import { LuMapPinned } from 'react-icons/lu';
-import { useRef, useTransition } from 'react';
-import { updateCustomer } from '../actions';
-import { toast } from 'sonner';
 import { ICustomer } from '@/lib/types';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState, useTransition } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { LuMapPinned } from 'react-icons/lu';
+import { toast } from 'sonner';
+import { z } from 'zod';
+import { updateCustomer } from '../actions';
 
 const taskSchema = z.object({
   name: z.string().nonempty('Nama customer harus diisi'),
@@ -34,7 +36,7 @@ export default function AddCustomerDialog({
   customer: ICustomer;
 }) {
   const [isPending, startTransition] = useTransition();
-  const dialogRef = useRef<HTMLButtonElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   const methods = useForm<TaskForm>({
     resolver: zodResolver(taskSchema),
@@ -57,13 +59,21 @@ export default function AddCustomerDialog({
         });
       } else {
         toast('Berhasil mengupdate customer');
-        dialogRef.current?.click();
+        methods.reset(); // Reset form
+        setIsOpen(false); // Close dialog
       }
     });
   };
 
+  const onOpenChange = (open: boolean) => {
+    if (!open) {
+      methods.reset(); // Reset form ketika dialog tertutup
+    }
+    setIsOpen(open);
+  };
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{Trigger}</DialogTrigger>
       <DialogContent className="max-w-[680px]">
         <DialogHeader className="border-b border-gray-300">
@@ -106,7 +116,6 @@ export default function AddCustomerDialog({
                   <Button
                     type="button"
                     className="w-[120px] outline outline-1 outline-blue-500 text-blue-500 hover:bg-blue-100 bg-white"
-                    ref={dialogRef}
                   >
                     Batal
                   </Button>

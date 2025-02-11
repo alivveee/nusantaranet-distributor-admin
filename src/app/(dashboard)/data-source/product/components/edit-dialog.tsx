@@ -1,20 +1,22 @@
 'use client';
+import InputField from '@/components/input-field';
 import { Button } from '@/components/ui/button';
 import {
+  Dialog,
   DialogClose,
+  DialogContent,
   DialogHeader,
   DialogMainContent,
   DialogTitle,
+  DialogTrigger,
 } from '@/components/ui/dialog';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { useForm, FormProvider } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import InputField from '@/components/input-field';
-import { useRef, useTransition } from 'react';
-import { updateProduct } from '../actions';
-import { toast } from 'sonner';
 import { IProduct } from '@/lib/types';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState, useTransition } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
+import { updateProduct } from '../actions';
 
 const productchema = z.object({
   name: z.string().nonempty('Nama produk harus diisi'),
@@ -30,7 +32,7 @@ export default function EditProductDialog({
   product: IProduct;
 }) {
   const [isPending, startTransition] = useTransition();
-  const dialogRef = useRef<HTMLButtonElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   const methods = useForm<TaskForm>({
     resolver: zodResolver(productchema),
@@ -50,13 +52,21 @@ export default function EditProductDialog({
         });
       } else {
         toast('Berhasil mengupdate produk');
-        dialogRef.current?.click();
+        methods.reset(); // Reset form
+        setIsOpen(false); // Close dialog
       }
     });
   };
 
+  const onOpenChange = (open: boolean) => {
+    if (!open) {
+      methods.reset(); // Reset form ketika dialog tertutup
+    }
+    setIsOpen(open);
+  };
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{Trigger}</DialogTrigger>
       <DialogContent className="max-w-[680px]">
         <DialogHeader className="border-b border-gray-300">
@@ -79,7 +89,6 @@ export default function EditProductDialog({
                   <Button
                     type="button"
                     className="w-[120px] outline outline-1 outline-blue-500 text-blue-500 hover:bg-blue-100 bg-white"
-                    ref={dialogRef}
                   >
                     Batal
                   </Button>

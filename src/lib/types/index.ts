@@ -11,4 +11,13 @@ export type ICustomer = {
   coordinate: string;
   address: string;
   created_at: string;
-}
+};
+
+export type IUser = {
+  id: string;
+  created_at: string;
+  email: string;
+  name: string;
+  phone: string;
+  role: 'admin' | 'karyawan';
+};

@@ -6,50 +6,39 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { readUsers } from '../actions';
+import { IUser } from '@/lib/types';
+import { formatDate } from '@/lib/utils';
+import ActionMenu from './action-menu';
 
-const task = [
-  {
-    id: 1,
-    type: 'Pengiriman',
-    customerName: 'The Com',
-    phone: '087812203910',
-    receiver: 'Rizky',
-    product: 'Router',
-    status: 'done',
-  },
-  {
-    id: 2,
-    type: 'Kanvassing',
-    customerName: 'Bpk Agus Mustofa',
-    phone: '087812203910',
-    receiver: 'Agus',
-    product: 'Splicer',
-    status: 'pending',
-  },
-];
+export default async function UsersTable() {
+  const { data: users } = await readUsers();
 
-export default function UsersTable() {
   return (
     <Table className="border-[1px] border-gray-200">
       <TableHeader>
         <TableRow>
-          <TableHead>Username</TableHead>
-          <TableHead>Nama Karyawan</TableHead>
+          <TableHead>No</TableHead>
+          <TableHead>Email</TableHead>
+          <TableHead>Nama User</TableHead>
           <TableHead>Nomor Telepon</TableHead>
-          <TableHead>Password</TableHead>
+          <TableHead>Role</TableHead>
+          <TableHead>Tanggal Dibuat</TableHead>
+          <TableHead>Aksi</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {task.map((item) => (
-          <TableRow key={item.id}>
-            <TableCell>{`00${item.id}`}</TableCell>
-            <TableCell className="truncate max-w-[150px]">
-              {item.customerName}
+        {(users as IUser[])?.map((user, idx) => (
+          <TableRow key={user.id}>
+            <TableCell className="w-2">{idx + 1}</TableCell>
+            <TableCell>{user.email}</TableCell>
+            <TableCell>{user.name}</TableCell>
+            <TableCell>{user.phone}</TableCell>
+            <TableCell>{user.role}</TableCell>
+            <TableCell>{formatDate(user.created_at)}</TableCell>
+            <TableCell>
+              <ActionMenu user={user} />
             </TableCell>
-            <TableCell className="text-sm truncate max-w-[200px]">
-              {item.phone}
-            </TableCell>
-            <TableCell>{'karyawan1'}</TableCell>
           </TableRow>
         ))}
       </TableBody>
