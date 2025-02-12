@@ -83,7 +83,7 @@ export default function AddProductDialog() {
                 <DialogClose asChild>
                   <Button
                     type="button"
-                    className="w-[120px] outline outline-1 outline-blue-500 text-blue-500 hover:bg-blue-100 bg-white"
+                    className="btn-cancel"
                   >
                     Batal
                   </Button>
@@ -91,7 +91,7 @@ export default function AddProductDialog() {
 
                 <Button
                   type="submit"
-                  className=" w-[120px] bg-blue-500 text-white"
+                  className="btn-submit"
                   disabled={isPending}
                 >
                   Simpan

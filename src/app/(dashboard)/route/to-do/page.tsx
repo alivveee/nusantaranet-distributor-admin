@@ -101,7 +101,7 @@ export default function ToDoRoutePage() {
     console.log('Total Distance:', distance, 'meters');
   };
   return (
-    <div className="w-[310px] h-full flex flex-col border-r">
+    <>
       <header className="p-4 ">
         <h1 className="text-lg font-semibold">Total Kunjungan (4)</h1>
       </header>
@@ -141,6 +141,6 @@ export default function ToDoRoutePage() {
         </div>
         <Button onClick={() => handleCalculateRoute()}>Optimalkan</Button>
       </footer>
-    </div>
+    </>
   );
 }

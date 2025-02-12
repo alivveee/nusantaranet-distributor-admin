@@ -48,7 +48,7 @@ export default function OnGoingRoutePage() {
   useEffect(() => setWaypoints(null), [setWaypoints]);
 
   return (
-    <div className="w-[310px] h-full flex flex-col border-r">
+    <>
       <header className="p-4 ">
         <h1 className="text-lg font-semibold">
           Total Kunjungan ({routes.length})
@@ -66,6 +66,6 @@ export default function OnGoingRoutePage() {
           ))}
         </div>
       </main>
-    </div>
+    </>
   );
 }
