@@ -7,9 +7,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Minus, Plus, Trash2 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Product } from './add-dialog';
 import { Label } from '@/components/ui/label';
+import { readProductOptions } from '../actions';
 
 interface ProductSelectorProps {
   products: Product[];
@@ -21,17 +22,22 @@ export function ProductSelector({
   onProductsChange,
 }: ProductSelectorProps) {
   const [selectedProduct, setSelectedProduct] = useState<string>('');
+  const [productOptions, setProductOptions] = useState<
+    { value: string; label: string }[] | undefined
+  >([]);
 
-  const productOptions = [
-    { value: 'router-a', label: 'Router A' },
-    { value: 'router-b', label: 'Router B' },
-    { value: 'splicer', label: 'Splicer' },
-  ];
+  // Fetch product productOptions from the server
+  useEffect(() => {
+    async function fetchProducts() {
+      const productOptions = await readProductOptions();
+      setProductOptions(productOptions);
+    }
+
+    fetchProducts();
+  }, []);
 
   const addProduct = () => {
-    const productToAdd = productOptions.find(
-      (p) => p.value === selectedProduct
-    );
+    const productToAdd = productOptions?.find((p) => p.value === selectedProduct);
     if (productToAdd && !products.some((p) => p.id === selectedProduct)) {
       onProductsChange([
         ...products,
@@ -63,7 +69,7 @@ export function ProductSelector({
             <SelectValue placeholder="Pilih Produk" />
           </SelectTrigger>
           <SelectContent>
-            {productOptions.map((option) => (
+            {productOptions?.map((option) => (
               <SelectItem key={option.value} value={option.value}>
                 {option.label}
               </SelectItem>

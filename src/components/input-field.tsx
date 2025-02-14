@@ -17,6 +17,7 @@ interface InputFieldProps {
   type?: string;
   iconButton?: React.ReactNode; // Ikon tombol di sisi kanan
   onIconClick?: () => void; // Event untuk tombol ikon
+  disabled?: boolean;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -25,6 +26,7 @@ const InputField: React.FC<InputFieldProps> = ({
   placeholder = '',
   type = 'text',
   iconButton,
+  disabled = false,
   onIconClick,
 }) => {
   const { control } = useFormContext();
@@ -33,6 +35,7 @@ const InputField: React.FC<InputFieldProps> = ({
     <FormField
       name={name}
       control={control}
+      disabled={disabled}
       render={({ field, fieldState }) => (
         <FormItem className="flex flex-col w-full space-y-1.5">
           <Label htmlFor={name} className="text-gray-700 font-semibold">

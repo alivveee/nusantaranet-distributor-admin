@@ -19,7 +19,7 @@ interface SelectFieldProps {
   name: string;
   label: string;
   placeholder?: string;
-  options: { value: string; label: string }[];
+  options: { value: string; label: string }[] | undefined;
 }
 
 const SelectField: React.FC<SelectFieldProps> = ({
@@ -45,7 +45,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
               <SelectContent>
-                {options.map((option) => (
+                {options?.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
                   </SelectItem>

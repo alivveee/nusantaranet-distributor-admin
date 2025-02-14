@@ -14,20 +14,10 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import InputField from '@/components/input-field';
 import { LuMapPinned } from 'react-icons/lu';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ProductSelector } from './products-selector';
 import DatePickerField from '@/components/date-picker';
-
-const typeOptions = [
-  { value: '1', label: 'Pengiriman' },
-  { value: '2', label: 'Kanvassing' },
-];
-const custOptions = [
-  { value: '1', label: 'PT. ABECE' },
-  { value: '2', label: 'PT. DEEEF' },
-  { value: '3', label: 'PT. GEHAI' },
-  { value: '4', label: 'PT. JIKEL' },
-];
+import { readCustomerOptions } from '../actions';
 
 export interface Product {
   id: string;
@@ -37,27 +27,39 @@ export interface Product {
 
 const taskSchema = z.object({
   type: z.string().nonempty('Jenis Tugas harus diisi'),
-  customer: z.string().nonempty('Customer harus diisi'),
-  coordinate: z.string().nonempty('Koordinat harus diisi'),
-  address: z.string().nonempty('Alamat harus diisi'),
-  product: z.string(),
+  customer_id: z.string().nonempty('Customer harus diisi'),
 });
 
 type TaskForm = z.infer<typeof taskSchema>;
 
 export default function AddTaskDialog() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [customerOptions, setCustomerOptions] = useState<
+    { value: string; label: string }[] | undefined
+  >([]);
+
+  const typeOptions = [
+    { value: 'pengiriman', label: 'pengiriman' },
+    { value: 'kanvassing', label: 'kanvassing' },
+  ];
 
   const methods = useForm<TaskForm>({
     resolver: zodResolver(taskSchema),
     defaultValues: {
       type: '',
-      customer: '',
-      coordinate: '',
-      address: '',
-      product: '',
+      customer_id: '',
     },
   });
+
+  // Fetch customer options from the server
+  useEffect(() => {
+    async function fetchCustomer() {
+      const options = await readCustomerOptions();
+      setCustomerOptions(options);
+    }
+
+    fetchCustomer();
+  }, []);
 
   const handleProductChange = (updatedProducts: Product[]) => {
     setProducts(updatedProducts);
@@ -97,10 +99,10 @@ export default function AddTaskDialog() {
               </div>
 
               <SelectField
-                name="customer"
+                name="customer_id"
                 label="Customer"
                 placeholder="Pilih Customer"
-                options={custOptions}
+                options={customerOptions}
               />
               <InputField
                 name="coordinate"
@@ -108,12 +110,14 @@ export default function AddTaskDialog() {
                 type="text"
                 placeholder="Masukkan titik koordinat"
                 iconButton={<LuMapPinned />}
+                disabled={true}
               />
               <InputField
                 name="address"
                 label="Alamat"
                 type="text"
                 placeholder="Masukkan titik alamat"
+                disabled={true}
               />
               <div className="w-full flex justify-between">
                 <div className="w-full pr-4 flex gap-2 items-end">

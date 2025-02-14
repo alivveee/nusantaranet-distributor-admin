@@ -1,6 +1,6 @@
 import MainContainer from '../main-container';
-import AddTaskDialog from './add-dialog';
-import TaskTable from './task-table';
+import AddTaskDialog from './components/add-dialog';
+import TaskTable from './components/task-table';
 
 export default function TaskPage() {
   return (
