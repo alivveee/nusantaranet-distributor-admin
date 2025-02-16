@@ -1,19 +1,45 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
+import { ITaskProduct } from '@/lib/types';
 import { revalidatePath, unstable_noStore } from 'next/cache';
 
-export default async function addTask(data: {
-  name: string;
-  phone: string;
-  coordinate: string;
-  address: string;
-}) {
+export default async function addTask(
+  data: {
+    type: 'pengiriman' | 'kanvassing';
+    customer_id: string;
+    date: string;
+  },
+  products: ITaskProduct[]
+) {
   const supabase = await createClient();
-  const result = await supabase.from('Tasks').insert(data);
+  const newTask = {
+    ...data,
+    status: 'dibuat',
+  };
 
-  revalidatePath('data-source/Task');
-  return JSON.stringify(result);
+  const createTaskResult = await supabase
+    .from('tasks')
+    .insert(newTask)
+    .select('id')
+    .single();
+
+  if (createTaskResult.error?.message) {
+    return JSON.stringify(createTaskResult);
+  } else {
+    // memasukkan setiap produk ke task_products
+    const taskProducts = products.map((product) => ({
+      ...product,
+      task_id: createTaskResult.data?.id,
+    }));
+
+    const createTaskProductsResult = await supabase
+      .from('task_products')
+      .insert(taskProducts);
+
+    revalidatePath('task');
+    return JSON.stringify(createTaskProductsResult);
+  }
 }
 
 export async function updateTask(
@@ -45,13 +71,20 @@ export async function readTasks() {
 
   const supabase = await createClient();
   const result = await supabase
-    .from('Tasks')
-    .select('*')
-    .order('created_at', { ascending: true });
-
+    .from('tasks')
+    .select(
+      `
+      *, 
+      products:task_products(product_id, product_name, quantity), 
+      asignee:users(id, name, phone), 
+      customer:customers(id, name, address)
+      `
+    )
+    .order('date', { ascending: true });
   return result;
 }
 
+//read options
 export async function readProductOptions() {
   unstable_noStore();
 

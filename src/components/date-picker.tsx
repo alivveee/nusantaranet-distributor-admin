@@ -64,7 +64,11 @@ const DatePickerField: React.FC<DatePickerFieldProps> = ({
                 <Calendar
                   mode="single"
                   selected={field.value}
-                  onSelect={field.onChange}
+                  onSelect={(date) => {
+                    if (date) {
+                      field.onChange(format(date, 'yyyy-MM-dd')); // Simpan sebagai string "YYYY-MM-DD"
+                    }
+                  }}
                   disabled={(date) => {
                     const yesterday = new Date();
                     yesterday.setDate(yesterday.getDate() - 1); // Hari kemarin

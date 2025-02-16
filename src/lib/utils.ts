@@ -11,7 +11,9 @@ export function formatDate(dateString: string) {
   return format(new Date(dateString), 'dd MMMM yyyy', { locale: id });
 }
 
-export function openGoogleMaps(coordinate: string) {
+export function openGoogleMaps(coordinate?: string) {
   const url = `https://www.google.com/maps?q=${coordinate}`;
-  window.open(url, '_blank');
+  if (coordinate) {
+    window.open(url, '_blank');
+  }
 }

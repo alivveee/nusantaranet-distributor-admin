@@ -28,7 +28,7 @@ const taskSchema = z.object({
 
 type TaskForm = z.infer<typeof taskSchema>;
 
-export default function AddCustomerDialog({
+export default function EditCustomerDialog({
   Trigger,
   customer,
 }: {

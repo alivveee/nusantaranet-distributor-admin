@@ -18,7 +18,7 @@ import { useEffect, useState, useTransition } from 'react';
 import { ProductSelector } from './products-selector';
 import DatePickerField from '@/components/date-picker';
 import addTask, { readCustomerOptions } from '../actions';
-import { ICustomer, ITaskProduct } from '@/lib/types';
+import { ICustomer, ITask, ITaskProduct } from '@/lib/types';
 import { readCustomerById } from '../../data-source/customer/actions';
 import { openGoogleMaps } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -31,7 +31,13 @@ const taskSchema = z.object({
 
 type TaskForm = z.infer<typeof taskSchema>;
 
-export default function AddTaskDialog() {
+export default function EditTaskDialog({
+  task,
+  Trigger,
+}: {
+  task: ITask;
+  Trigger: React.ReactNode;
+}) {
   const [isPending, startTransition] = useTransition();
   const [isOpen, setIsOpen] = useState(false);
   const [products, setProducts] = useState<ITaskProduct[]>([]);
@@ -48,8 +54,9 @@ export default function AddTaskDialog() {
   const methods = useForm<TaskForm>({
     resolver: zodResolver(taskSchema),
     defaultValues: {
-      type: 'pengiriman',
-      customer_id: '',
+      type: task.type,
+      customer_id: task.customer_id,
+      date: task.date,
     },
   });
 
@@ -112,9 +119,7 @@ export default function AddTaskDialog() {
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>
-        <Button className="bg-blue-500 text-white">Tambah Tugas</Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{Trigger}</DialogTrigger>
       <DialogContent className="max-w-[680px]">
         <DialogHeader className="border-b border-gray-300">
           <DialogTitle>Tambah Tugas</DialogTitle>

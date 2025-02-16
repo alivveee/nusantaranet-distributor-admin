@@ -21,3 +21,22 @@ export type IUser = {
   phone: string;
   role: 'admin' | 'karyawan';
 };
+
+export type ITaskProduct = {
+  product_id: string;
+  product_name: string;
+  quantity: number;
+};
+
+export type ITask = {
+  id: string;
+  customer_id: string;
+  asignee_id: string | null;
+  created_at: string;
+  type: 'pengiriman' | 'kanvassing';
+  status: string;
+  date: string; // Format yyyy-MM-dd
+  asignee: IUser | null;
+  customer: ICustomer;
+  products: ITaskProduct[];
+};

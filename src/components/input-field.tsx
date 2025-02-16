@@ -15,6 +15,7 @@ interface InputFieldProps {
   label: string;
   placeholder?: string;
   type?: string;
+  defaultValue?: string;
   iconButton?: React.ReactNode; // Ikon tombol di sisi kanan
   onIconClick?: () => void; // Event untuk tombol ikon
   disabled?: boolean;
@@ -25,6 +26,7 @@ const InputField: React.FC<InputFieldProps> = ({
   label,
   placeholder = '',
   type = 'text',
+  defaultValue,
   iconButton,
   disabled = false,
   onIconClick,
@@ -48,6 +50,7 @@ const InputField: React.FC<InputFieldProps> = ({
                 id={name}
                 type={type}
                 placeholder={placeholder}
+                defaultValue={defaultValue}
                 className={iconButton ? 'pr-12' : ''} // Berikan padding-right jika ada ikon
                 {...field}
               />

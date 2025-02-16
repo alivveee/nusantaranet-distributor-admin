@@ -1,4 +1,3 @@
-import ActionMenu from '@/components/action-menu';
 import { Badge } from '@/components/ui/badge';
 import {
   Table,
@@ -8,102 +7,17 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { FaEye } from 'react-icons/fa';
+import { readTasks } from '../actions';
+import { ITask } from '@/lib/types';
+import { cn, formatDate } from '@/lib/utils';
+import ProductViewButton from './product-view-button';
+import ActionMenu from './action-menu';
 
-const task = [
-  {
-    id: 1,
-    type: 'Pengiriman',
-    customerName: 'The Com',
-    date: '2021-10-10',
-    receiver: 'Rizky',
-    product: 'Router',
-    status: 'done',
-  },
-  {
-    id: 2,
-    type: 'Kanvassing',
-    customerName: 'Bpk Agus Mustofa',
-    date: '2021-10-10',
-    receiver: 'Agus',
-    product: 'Splicer',
-    status: 'pending',
-  },
-  {
-    id: 3,
-    type: 'Pengiriman',
-    customerName: 'PT Interkoneksi',
-    date: '2021-10-10',
-    receiver: 'Abdul',
-    product: 'Router',
-    status: 'on-going',
-  },
-  {
-    id: 4,
-    type: 'Perbaikan',
-    customerName: 'PT Interkoneksi',
-    date: '2021-10-10',
-    receiver: 'Abdul',
-    product: 'Router',
-    status: 'failed',
-  },
-  {
-    id: 5,
-    type: 'Pengiriman',
-    customerName: 'PT Interkoneksi',
-    date: '2021-10-10',
-    receiver: 'Abdul',
-    product: 'Router',
-    status: 'done',
-  },
-  {
-    id: 6,
-    type: 'Pengiriman',
-    customerName: 'PT Interkoneksi',
-    date: '2021-10-10',
-    receiver: 'Abdul',
-    product: 'Router',
-    status: 'done',
-  },
-  {
-    id: 7,
-    type: 'Pengiriman',
-    customerName: 'PT Interkoneksi',
-    date: '2021-10-10',
-    receiver: 'Abdul',
-    product: 'Router',
-    status: 'done',
-  },
-  {
-    id: 8,
-    type: 'Pengiriman',
-    customerName: 'PT Interkoneksi',
-    date: '2021-10-10',
-    receiver: 'Abdul',
-    product: 'Router',
-    status: 'done',
-  },
-  {
-    id: 9,
-    type: 'Pengiriman',
-    customerName: 'PT Interkoneksi',
-    date: '2021-10-10',
-    receiver: 'Abdul',
-    product: 'Router',
-    status: 'done',
-  },
-  {
-    id: 10,
-    type: 'Pengiriman',
-    customerName: 'PT Interkoneksi',
-    date: '2021-10-10',
-    receiver: 'Abdul',
-    product: 'Router',
-    status: 'done',
-  },
-];
+export default async function TaskTable() {
+  const { data: tasks } = await readTasks();
 
-export default function TaskTable() {
+  console.log(tasks);
+
   return (
     <Table className="border-[1px] border-gray-200">
       <TableHeader>
@@ -119,47 +33,40 @@ export default function TaskTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {task.map((item) => (
-          <TableRow key={item.id}>
-            <TableCell>{item.type}</TableCell>
-            <TableCell className="truncate max-w-[150px]">
-              {item.customerName}
-            </TableCell>
-            <TableCell className="text-sm truncate max-w-[200px]">
-              {
-                'Jl. Sudimoro Utara, Mojolangu, Kec. Lowokwaru, Kota Malang, Jawa Timur 65142'
-              }
-            </TableCell>
-            <TableCell>{item.date}</TableCell>
-            <TableCell>{item.receiver}</TableCell>
+        {(tasks as ITask[])?.map((task) => (
+          <TableRow key={task.id}>
+            <TableCell>{task.type}</TableCell>
+            <TableCell>{task.customer.name}</TableCell>
+            <TableCell>{task.customer.address}</TableCell>
+            <TableCell>{formatDate(task.date)}</TableCell>
+            <TableCell>{task.asignee_id}</TableCell>
             <TableCell>
-              <button className="flex items-center text-gray-600">
-                <FaEye size={18} />
-              </button>
+              <ProductViewButton products={task.products} />
             </TableCell>
             <TableCell>
               <Badge
-                className={`${
-                  item.status === 'done'
-                    ? 'bg-green-500'
-                    : item.status === 'pending'
-                      ? 'bg-yellow-500'
-                      : item.status === 'on-going'
-                        ? 'bg-blue-500'
-                        : 'bg-red-500'
-                } w-[80px] flex justify-center`}
+                className={cn(
+                  task.status === 'selesai'
+                    ? 'bg-green-500 hover:bg-green-600'
+                    : task.status === 'dibuat'
+                      ? 'bg-yellow-500 hover:bg-yellow-600'
+                      : task.status === 'berjalan'
+                        ? 'bg-blue-500 hover:bg-blue-600'
+                        : 'bg-red-500 hover:bg-red-600',
+                  'w-[80px] flex justify-center'
+                )}
               >
-                {item.status === 'done'
+                {task.status === 'selesai'
                   ? 'Selesai'
-                  : item.status === 'pending'
-                    ? 'Menunggu'
-                    : item.status === 'on-going'
+                  : task.status === 'dibuat'
+                    ? 'Dibuat'
+                    : task.status === 'berjalan'
                       ? 'Berjalan'
                       : 'Gagal'}
               </Badge>
             </TableCell>
             <TableCell>
-              <ActionMenu />
+              <ActionMenu task={task} />
             </TableCell>
           </TableRow>
         ))}
