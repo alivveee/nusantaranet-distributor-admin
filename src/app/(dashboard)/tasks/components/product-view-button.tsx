@@ -24,12 +24,14 @@ export default function ProductViewButton({
         </TooltipTrigger>
         <TooltipContent>
           <table>
+            <tbody>
             {products?.map((product, idx) => (
               <tr key={idx}>
                 <td className="min-w-[72px] pe-2">{product.product_name}</td>
                 <td> x{product.quantity}</td>
               </tr>
             ))}
+            </tbody>
           </table>
         </TooltipContent>
       </Tooltip>

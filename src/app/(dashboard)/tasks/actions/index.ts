@@ -45,17 +45,30 @@ export default async function addTask(
 export async function updateTask(
   id: string,
   data: {
-    name: string;
-    phone: string;
-    coordinate: string;
-    address: string;
-  }
+    type: 'pengiriman' | 'kanvassing';
+    customer_id: string;
+    date: string;
+  },
+  products: ITaskProduct[]
 ) {
   const supabase = await createClient();
-  const result = await supabase.from('Tasks').update(data).eq('id', id);
+ 
+  // tasks update
+  const createTaskResult = await supabase
+    .from('tasks')
+    .update(data).eq('id',id)
 
-  revalidatePath('data-source/Task');
-  return JSON.stringify(result);
+  if (createTaskResult.error?.message) {
+    return JSON.stringify(createTaskResult);
+  } else {
+    // task_products update
+    const createTaskProductsResult = await supabase
+      .from('task_products')
+      .update(products).eq('task_id', id);
+
+    revalidatePath('task');
+    return JSON.stringify(createTaskProductsResult);
+  }
 }
 
 export async function deleteTask(id: string) {

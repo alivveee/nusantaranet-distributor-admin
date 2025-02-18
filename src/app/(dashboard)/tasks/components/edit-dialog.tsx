@@ -17,7 +17,7 @@ import { LuMapPinned } from 'react-icons/lu';
 import { useEffect, useState, useTransition } from 'react';
 import { ProductSelector } from './products-selector';
 import DatePickerField from '@/components/date-picker';
-import addTask, { readCustomerOptions } from '../actions';
+import addTask, { readCustomerOptions, updateTask } from '../actions';
 import { ICustomer, ITask, ITaskProduct } from '@/lib/types';
 import { readCustomerById } from '../../data-source/customer/actions';
 import { openGoogleMaps } from '@/lib/utils';
@@ -92,16 +92,16 @@ export default function EditTaskDialog({
 
   const onSubmit = (data: TaskForm) => {
     startTransition(async () => {
-      const result = await addTask(data, products);
+      const result = await updateTask(task.id, data, products);
       const { error } = JSON.parse(result);
 
       if (error) {
-        toast('Gagal menambahkan tugas', {
-          description: error.message,
+        toast('Gagal mengupdate tugas', {
+          description: error.essage,
         });
         console.error(error.message);
       } else {
-        toast('Berhasil menambahkan tugas');
+        toast('Berhasil mengupdate tugas');
         methods.reset(); // Reset form setelah berhasil menambahkan customer
         setIsOpen(false); // Tutup dialog
         setProducts([]);
@@ -122,7 +122,7 @@ export default function EditTaskDialog({
       <DialogTrigger asChild>{Trigger}</DialogTrigger>
       <DialogContent className="max-w-[680px]">
         <DialogHeader className="border-b border-gray-300">
-          <DialogTitle>Tambah Tugas</DialogTitle>
+          <DialogTitle>Edit Tugas</DialogTitle>
         </DialogHeader>
         <DialogMainContent>
           <FormProvider {...methods}>
