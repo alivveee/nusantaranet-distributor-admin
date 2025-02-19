@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { useTransition } from 'react';
 import { toast } from 'sonner';
+import { deleteTask } from '../actions';
 
 export function AlertDialogDelete({
   Trigger,
@@ -22,18 +23,18 @@ export function AlertDialogDelete({
   const [isPending, startTransition] = useTransition();
 
   const onSubmit = () => {
-    // startTransition(async () => {
-    //   const result = await deleteCustomer(id);
-    //   const { error } = JSON.parse(result);
+    startTransition(async () => {
+      const result = await deleteTask(id);
+      const { error } = JSON.parse(result);
 
-    //   if (error) {
-    //     toast('Gagal menghapus customer', {
-    //       description: error.message,
-    //     });
-    //   } else {
-    //     toast('Berhasil menghapus customer');
-    //   }
-    // });
+      if (error) {
+        toast('Gagal menghapus tugas', {
+          description: error.message,
+        });
+      } else {
+        toast('Berhasil menghapus tugas');
+      }
+    });
   };
 
   return (

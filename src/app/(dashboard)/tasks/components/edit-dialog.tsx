@@ -1,27 +1,29 @@
 'use client';
 
+import DatePickerField from '@/components/date-picker';
+import InputField from '@/components/input-field';
 import SelectField from '@/components/select-field';
 import { Button } from '@/components/ui/button';
 import {
+  Dialog,
   DialogClose,
+  DialogContent,
   DialogHeader,
   DialogMainContent,
   DialogTitle,
+  DialogTrigger,
 } from '@/components/ui/dialog';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { useForm, FormProvider, useWatch } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import InputField from '@/components/input-field';
-import { LuMapPinned } from 'react-icons/lu';
-import { useEffect, useState, useTransition } from 'react';
-import { ProductSelector } from './products-selector';
-import DatePickerField from '@/components/date-picker';
-import addTask, { readCustomerOptions, updateTask } from '../actions';
 import { ICustomer, ITask, ITaskProduct } from '@/lib/types';
-import { readCustomerById } from '../../data-source/customer/actions';
 import { openGoogleMaps } from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useState, useTransition } from 'react';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
+import { LuMapPinned } from 'react-icons/lu';
 import { toast } from 'sonner';
+import { z } from 'zod';
+import { readCustomerById } from '../../data-source/customer/actions';
+import { readCustomerOptions, updateTask } from '../actions';
+import { ProductSelector } from './products-selector';
 
 const taskSchema = z.object({
   type: z.enum(['pengiriman', 'kanvassing']),
@@ -75,6 +77,10 @@ export default function EditTaskDialog({
       fetchCustomerDetail();
     }
   }, [customerId]);
+
+  useEffect(() => {
+    setProducts(task.products);
+  }, [task.products, isOpen]);
 
   // Fetch customer options from the server
   useEffect(() => {

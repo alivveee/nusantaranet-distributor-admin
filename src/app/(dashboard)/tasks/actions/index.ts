@@ -52,30 +52,36 @@ export async function updateTask(
   products: ITaskProduct[]
 ) {
   const supabase = await createClient();
- 
+
   // tasks update
   const createTaskResult = await supabase
     .from('tasks')
-    .update(data).eq('id',id)
+    .update(data)
+    .eq('id', id);
 
   if (createTaskResult.error?.message) {
     return JSON.stringify(createTaskResult);
   } else {
-    // task_products update
-    const createTaskProductsResult = await supabase
+    // Upsert task_products (insert atau update jika sudah ada)
+    const upsertTaskProductsResult = await supabase
       .from('task_products')
-      .update(products).eq('task_id', id);
-
+      .upsert(
+        products.map((product) => ({
+          ...product,
+          task_id: id, // Pastikan task_id selalu di-set
+        })),
+        { onConflict: 'task_id, product_id' } // Pastikan berdasarkan primary key atau unique constraint
+      );
     revalidatePath('task');
-    return JSON.stringify(createTaskProductsResult);
+    return JSON.stringify(upsertTaskProductsResult);
   }
 }
 
 export async function deleteTask(id: string) {
   const supabase = await createClient();
-  const result = await supabase.from('Tasks').delete().eq('id', id);
+  const result = await supabase.from('tasks').delete().eq('id', id);
 
-  revalidatePath('data-source/Task');
+  revalidatePath('task');
   return JSON.stringify(result);
 }
 

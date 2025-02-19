@@ -5,7 +5,6 @@ import readUserSession from '@/lib/actions';
 import { useUserStore } from '@/lib/store/user';
 import { redirect } from 'next/navigation';
 
-
 export default async function DashboardLayout({
   children,
 }: {
@@ -25,7 +24,12 @@ export default async function DashboardLayout({
         <AppSidebar />
         <div className="flex flex-1 h-full flex-col">
           <Header />
-          <main className="flex-1 h-full overflow-auto">{children}</main>
+          <main
+            className="flex-1 h-full 
+          overflow-auto"
+          >
+            {children}
+          </main>
         </div>
       </SidebarProvider>
     </div>
