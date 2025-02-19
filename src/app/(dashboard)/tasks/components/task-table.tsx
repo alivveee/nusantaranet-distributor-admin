@@ -16,8 +16,6 @@ import ActionMenu from './action-menu';
 export default async function TaskTable() {
   const { data: tasks } = await readTasks();
 
-  console.log(tasks);
-
   return (
     <Table className="border-[1px] border-gray-200">
       <TableHeader>

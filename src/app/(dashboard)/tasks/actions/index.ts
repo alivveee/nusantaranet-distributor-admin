@@ -70,11 +70,24 @@ export async function updateTask(
           ...product,
           task_id: id, // Pastikan task_id selalu di-set
         })),
-        { onConflict: 'task_id, product_id' } // Pastikan berdasarkan primary key atau unique constraint
+        { onConflict: 'task_id,product_id' } // Pastikan berdasarkan primary key atau unique constraint
       );
     revalidatePath('task');
     return JSON.stringify(upsertTaskProductsResult);
   }
+}
+
+export async function deleteTaskProduct(taskId: string, productId: string) {
+  const supabase = await createClient();
+
+  const deleteResult = await supabase
+    .from('task_products')
+    .delete()
+    .eq('task_id', taskId)
+    .eq('product_id', productId);
+
+  revalidatePath('task');
+  return JSON.stringify(deleteResult);
 }
 
 export async function deleteTask(id: string) {

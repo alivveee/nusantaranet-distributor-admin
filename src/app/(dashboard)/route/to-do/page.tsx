@@ -8,81 +8,33 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import ItemTaskToDo from './item-task-todo';
-import { useEffect } from 'react';
+import ItemTaskToDo from './components/item-task-todo';
+import { useEffect, useState } from 'react';
 import calculateOptimalRoute from '../algorithm/genetic-algorithm-tsp';
 import useRouteStore from '../_store/useRouteStore';
+import { readWaypoints } from './actions';
 
-const dummyWaypoints = [
-  {
-    name: 'Juni Elektronik',
-    lat: -7.7450635552223455,
-    lon: 113.2182567592503,
-  },
-  {
-    name: 'Sari I Elektronic Pasuruan',
-    lat: -7.768547731096245,
-    lon: 112.74666790270959,
-  },
-  {
-    name: 'Jimmy Electronic',
-    lat: -7.758113773966092,
-    lon: 113.22837119484377,
-  },
-  {
-    name: 'Toko Fiber Optic Network',
-    lat: -7.763666050469333,
-    lon: 113.41894034508513,
-  },
-  {
-    name: 'Jago Elektronik - Pasuruan',
-    lat: -7.643786399086414,
-    lon: 112.8974431696384,
-  },
-  {
-    name: 'Centro Electronic',
-    lat: -7.6450904119843734,
-    lon: 112.90319516656767,
-  },
-  {
-    name: 'Ceria Elektronik Situbondo',
-    lat: -7.702986808764167,
-    lon: 114.00306776224795,
-  },
-  {
-    name: 'INSAN ABADI network equipment',
-    lat: -7.902684447345017,
-    lon: 113.8242253811314,
-  },
-  // {
-  //   name: 'ShidqiLed Elektronik',
-  //   lat: -7.724847341131446,
-  //   lon: 113.69594755132324,
-  // },
-  // {
-  //   name: 'JAY_NETWOR LOKAL INTERNET',
-  //   lat: -7.855615979545028,
-  //   lon: 113.9289741183834,
-  // },
-  // {
-  //   name: 'Rief Bajigur. Net',
-  //   lat: -7.841947167247782,
-  //   lon: 113.40881614026092,
-  // },
-  // {
-  //   name: 'Nid@ Net',
-  //   lat: -7.757209035459546,
-  //   lon: 113.44696440104391,
-  // },
-  // {
-  //   name: 'Miya Wifi Hotspot',
-  //   lat: -7.790181028400896,
-  //   lon: 113.50998153669606,
-  // },
-];
+type waypointData = {
+  name: string;
+  lat: number;
+  lon: number;
+};
 
 export default function ToDoRoutePage() {
+  const [fetchedWaypoints, setFetchedWaypoints] = useState<waypointData[]>([]);
   const { setSelectedRoute, setWaypoints, waypoints } = useRouteStore();
+
+  useEffect(() => {
+    const fetchWaypoints = async () => {
+      const waypointsData = await readWaypoints();
+      if (waypointsData) {
+        setFetchedWaypoints(waypointsData);
+      } else {
+        setFetchedWaypoints([]);
+      }
+    };
+    fetchWaypoints();
+  }, []);
 
   useEffect(() => {
     setSelectedRoute(null);
@@ -90,11 +42,11 @@ export default function ToDoRoutePage() {
   }, [setSelectedRoute, setWaypoints]);
 
   useEffect(() => {
-    setWaypoints(dummyWaypoints);
-  }, [dummyWaypoints, setWaypoints]);
+    setWaypoints(fetchedWaypoints);
+  }, [fetchedWaypoints, setWaypoints]);
 
   const handleCalculateRoute = async () => {
-    const { route, distance } = await calculateOptimalRoute(dummyWaypoints);
+    const { route, distance } = await calculateOptimalRoute(fetchedWaypoints);
     setWaypoints(route);
 
     console.log('Optimal Route for Customers:', route);
@@ -116,7 +68,7 @@ export default function ToDoRoutePage() {
                   custName={waypoint.name}
                 />
               ))
-            : dummyWaypoints.map((waypoint, idx) => (
+            : fetchedWaypoints.map((waypoint, idx) => (
                 <ItemTaskToDo
                   key={idx}
                   order={idx + 1}

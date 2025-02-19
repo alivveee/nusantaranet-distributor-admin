@@ -179,6 +179,7 @@ export default function EditTaskDialog({
               <div className="w-full flex justify-between">
                 <div className="w-full pr-4 flex gap-2 items-end">
                   <ProductSelector
+                    taskId={task.id}
                     products={products}
                     onProductsChange={handleProductChange}
                   />

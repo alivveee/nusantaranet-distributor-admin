@@ -7,21 +7,25 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Minus, Plus, Trash2, ListPlus } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { Label } from '@/components/ui/label';
-import { readProductOptions } from '../actions';
+import { deleteTaskProduct, readProductOptions } from '../actions';
 import { Input } from '@/components/ui/input';
 import { ITaskProduct } from '@/lib/types';
+import { toast } from 'sonner';
 
 interface ProductSelectorProps {
   products: ITaskProduct[];
   onProductsChange: (updatedProducts: ITaskProduct[]) => void;
+  taskId?: string; // Task ID for which the product is being selected.
 }
 
 export function ProductSelector({
   products,
   onProductsChange,
+  taskId,
 }: ProductSelectorProps) {
+  const [isLoading, startTransition] = useTransition();
   const [selectedProduct, setSelectedProduct] = useState<string>('');
   const [productOptions, setProductOptions] = useState<
     { value: string; label: string }[] | undefined
@@ -77,6 +81,21 @@ export function ProductSelector({
 
   const removeProduct = (id: string) => {
     onProductsChange(products.filter((product) => product.product_id !== id));
+    if (taskId) {
+      startTransition(async () => {
+        const result = await deleteTaskProduct(taskId, id);
+        const { error } = JSON.parse(result);
+
+        if (error) {
+          toast('Gagal menghapus produk', {
+            description: error.essage,
+          });
+          console.error(error.message);
+        } else {
+          toast('Berhasil menghapus produk');
+        }
+      });
+    }
   };
 
   return (
@@ -118,6 +137,7 @@ export function ProductSelector({
               size="icon"
               onClick={() => removeProduct(product.product_id)}
               className="text-gray-500 hover:text-red-500"
+              disabled={isLoading}
             >
               <Trash2 />
             </Button>
