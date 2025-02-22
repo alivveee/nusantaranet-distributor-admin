@@ -25,7 +25,7 @@ interface SelectFieldProps {
 const SelectField: React.FC<SelectFieldProps> = ({
   name,
   label,
-  placeholder = 'Pilih opsi...',
+  placeholder,
   options,
 }) => {
   const { control } = useFormContext();

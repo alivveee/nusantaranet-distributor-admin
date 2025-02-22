@@ -157,10 +157,11 @@ export default async function calculateOptimalRoute(
       : best
   );
 
-  const bestDistance = calcTotalDistance(distanceMatrix, bestRoute);
+  const bestDistanceMeters = calcTotalDistance(distanceMatrix, bestRoute);
+  const bestDistanceKilometers = bestDistanceMeters / 1000; // Konversi ke kilometer
 
   return {
     route: bestRoute.slice(1, -1).map((i) => waypoints[i]),
-    distance: bestDistance,
+    distance: bestDistanceKilometers,
   };
 }
