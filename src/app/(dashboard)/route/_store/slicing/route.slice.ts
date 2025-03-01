@@ -27,7 +27,7 @@ export interface Waypoint {
 export interface RouteState {
   // values
   selectedRoute: Route | null;
-  waypoints: Waypoint[] | null;
+  waypoints: Waypoint[] | [];
 
   // setter
   setSelectedRoute: (query: RouteState['selectedRoute']) => void;
@@ -38,7 +38,7 @@ export interface RouteState {
 const createRouteState: StateCreator<RouteState> = (set) => ({
   // initial values
   selectedRoute: null,
-  waypoints: null,
+  waypoints: [],
 
   // state handler
   setSelectedRoute(query) {

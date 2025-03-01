@@ -55,7 +55,7 @@ export default function ToDoRoutePage() {
 
   useEffect(() => {
     setSelectedRoute(null);
-    setWaypoints(null);
+    setWaypoints([]);
   }, [setSelectedRoute, setWaypoints]);
 
   useEffect(() => {
@@ -67,36 +67,43 @@ export default function ToDoRoutePage() {
       const { route, distance } = await calculateOptimalRoute(fetchedWaypoints);
       setWaypoints(route);
 
-      toast('Rute berhasil dioptimalkan', { description: `Jarak total: ${distance} km` });
-      
+      toast('Rute berhasil dioptimalkan', {
+        description: `Jarak total: ${distance} km`,
+      });
     });
   };
   return (
     <>
       <header className="p-4 ">
-        <h1 className="text-lg font-semibold">Total Kunjungan (4)</h1>
+        <h1 className="text-lg font-semibold">
+          Tugas Hari Ini ({waypoints?.length})
+        </h1>
       </header>
       {/* Main content of the sidebar with scroll */}
       <main className="flex-1 overflow-y-auto">
         <div className="h-max">
-          {waypoints
-            ? waypoints.map((waypoint, idx) => (
-                <ItemTaskToDo
-                  key={idx}
-                  order={idx + 1}
-                  custName={waypoint.name}
-                />
-              ))
-            : fetchedWaypoints.map((waypoint, idx) => (
-                <ItemTaskToDo
-                  key={idx}
-                  order={idx + 1}
-                  custName={waypoint.name}
-                />
-              ))}
+          {fetchedWaypoints.length > 0 ? (
+            fetchedWaypoints.map((waypoint, idx) => (
+              <ItemTaskToDo
+                key={idx}
+                order={idx + 1}
+                custName={waypoint.name}
+              />
+            ))
+          ) : waypoints.length > 0 ? (
+            waypoints.map((waypoint, idx) => (
+              <ItemTaskToDo
+                key={idx}
+                order={idx + 1}
+                custName={waypoint.name}
+              />
+            ))
+          ) : (
+            <p className="text-sm text-gray-500 px-4">Tidak ada tugas untuk hari ini</p>
+          )}
         </div>
       </main>
-      <footer className="flex flex-col gap-2 p-4 bg-white">
+      <footer className="flex flex-col gap-2 p-4 bg-white ">
         <FormProvider {...methods}>
           <form
             className="flex flex-col gap-2"
