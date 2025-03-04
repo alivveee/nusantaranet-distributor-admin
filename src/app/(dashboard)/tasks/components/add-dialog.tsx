@@ -50,6 +50,7 @@ export default function AddTaskDialog() {
     defaultValues: {
       type: 'pengiriman',
       customer_id: '',
+      date: new Date().toISOString().split('T')[0],
     },
   });
 

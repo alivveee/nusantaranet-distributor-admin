@@ -4,7 +4,7 @@ import ItemTaskToDo from './components/item-task-todo';
 import { useEffect, useState, useTransition } from 'react';
 import calculateOptimalRoute from '../algorithm/genetic-algorithm-tsp';
 import useRouteStore from '../_store/useRouteStore';
-import { readAsigneeOptions, readWaypoints } from './actions';
+import addRoute, { readAsigneeOptions, readWaypoints } from './actions';
 import { z } from 'zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -22,9 +22,9 @@ type RouteForm = z.infer<typeof routeSchema>;
 export default function ToDoRoutePage() {
   const [isPending, startTransition] = useTransition();
   const [fetchedWaypoints, setFetchedWaypoints] = useState<
-    { name: string; lat: number; lon: number }[]
+    { task_id: string; name: string; lat: number; lon: number }[]
   >([]);
-  const { setSelectedRoute, setWaypoints, waypoints } = useRouteStore();
+  const { setWaypoints, waypoints } = useRouteStore();
   const [asigneeOptions, setAsigneeOptions] = useState<
     { value: string; label: string }[] | undefined
   >([]);
@@ -54,19 +54,36 @@ export default function ToDoRoutePage() {
   }, []);
 
   useEffect(() => {
-    setSelectedRoute(null);
     setWaypoints([]);
-  }, [setSelectedRoute, setWaypoints]);
+  }, [setWaypoints]);
 
   useEffect(() => {
     setWaypoints(fetchedWaypoints);
   }, [fetchedWaypoints, setWaypoints]);
 
+  const onSubmit = (data: RouteForm) => {
+    startTransition(async () => {
+      const result = await addRoute(data, waypoints);
+      const { error } = JSON.parse(result);
+
+      if (error) {
+        toast('Gagal menambahkan rute', {
+          description: error.message,
+        });
+        console.error(error);
+      } else {
+        toast('Berhasil menambahkan rute');
+        methods.reset(); // Reset form setelah berhasil menambahkan rute
+        setFetchedWaypoints([]);
+      }
+    });
+  };
+
   const handleCalculateRoute = () => {
     startTransition(async () => {
       const { route, distance } = await calculateOptimalRoute(fetchedWaypoints);
       setWaypoints(route);
-
+      console.log('Jarak total: ', distance, ' km');
       toast('Rute berhasil dioptimalkan', {
         description: `Jarak total: ${distance} km`,
       });
@@ -82,7 +99,7 @@ export default function ToDoRoutePage() {
       {/* Main content of the sidebar with scroll */}
       <main className="flex-1 overflow-y-auto">
         <div className="h-max">
-          {fetchedWaypoints.length > 0 ? (
+          {fetchedWaypoints?.length > 0 ? (
             fetchedWaypoints.map((waypoint, idx) => (
               <ItemTaskToDo
                 key={idx}
@@ -90,7 +107,7 @@ export default function ToDoRoutePage() {
                 custName={waypoint.name}
               />
             ))
-          ) : waypoints.length > 0 ? (
+          ) : waypoints?.length > 0 ? (
             waypoints.map((waypoint, idx) => (
               <ItemTaskToDo
                 key={idx}
@@ -99,7 +116,9 @@ export default function ToDoRoutePage() {
               />
             ))
           ) : (
-            <p className="text-sm text-gray-500 px-4">Tidak ada tugas untuk hari ini</p>
+            <p className="text-sm text-gray-500 px-4">
+              Tidak ada tugas untuk hari ini
+            </p>
           )}
         </div>
       </main>
@@ -107,11 +126,12 @@ export default function ToDoRoutePage() {
         <FormProvider {...methods}>
           <form
             className="flex flex-col gap-2"
-            // onSubmit={methods.handleSubmit(handleSubmit)}
+            onSubmit={methods.handleSubmit(onSubmit)}
           >
             <SelectField
-              name="asignee"
+              name="asignee_id"
               options={asigneeOptions}
+              placeholder="Pilih penerima tugas"
               label="Penerima Tugas"
             />
             <div className="grid grid-cols-2 gap-2">
@@ -125,7 +145,9 @@ export default function ToDoRoutePage() {
                   className={cn('animate-spin', { hidden: !isPending })}
                 />
               </Button>
-              <Button type="submit">Tugaskan</Button>
+              <Button disabled={isPending || waypoints?.length < 1}>
+                Tugaskan
+              </Button>
             </div>
           </form>
         </FormProvider>

@@ -2,7 +2,37 @@
 
 import { createClient } from '@/lib/supabase/server';
 import { format } from 'date-fns';
-import { unstable_noStore } from 'next/cache';
+import { revalidatePath, unstable_noStore } from 'next/cache';
+import { Waypoint } from '../../_store/slicing/route.slice';
+
+export default async function addRoute(
+  data: { asignee_id: string },
+  route: Waypoint[]
+) {
+  const supabase = await createClient();
+
+  // Pastikan tasks dikirim sebagai JSONB, bukan string JSON
+  const tasks = route.map((waypoint, idx) => ({
+    task_id: waypoint.task_id,
+    task_order: idx + 1,
+  }));
+
+  // Panggil stored procedure dengan Supabase RPC
+  const { data: result, error } = await supabase.rpc(
+    'insert_route_with_tasks',
+    {
+      asignee_id: data.asignee_id,
+      tasks_param: tasks, // Kirim sebagai JSONB, bukan string
+    }
+  );
+
+  if (error) {
+    return JSON.stringify({ error });
+  }
+
+  revalidatePath('route');
+  return JSON.stringify(result);
+}
 
 export async function readWaypoints() {
   unstable_noStore();
@@ -11,18 +41,20 @@ export async function readWaypoints() {
   const today = format(new Date(), 'yyyy-MM-dd');
   const result = await supabase
     .from('tasks')
-    .select('customer:customers(name, coordinate)')
-    .eq('date', today);
+    .select('id,customer:customers(name, coordinate)')
+    .eq('date', today)
+    .eq('status', 'dibuat');
 
   // Pastikan hanya data yang memiliki customers & coordinate yang diolah
-  const waypoints = result.data?.map(({ customer }) => {
+  const waypoints = result.data?.map((task) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const [lat, lon] = customer.coordinate.split(',').map(Number);
+    const [lat, lon] = task.customer.coordinate.split(',').map(Number);
     return {
+      task_id: task.id,
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      name: customer.name,
+      name: task.customer.name,
       lat,
       lon,
     };

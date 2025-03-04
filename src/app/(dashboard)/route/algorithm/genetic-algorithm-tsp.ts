@@ -1,4 +1,5 @@
 interface Waypoint {
+  task_id: string;
   name: string;
   lat: number;
   lon: number;
@@ -140,7 +141,12 @@ function mutate(individual: number[]): void {
 export default async function calculateOptimalRoute(
   dynamicWaypoints: Waypoint[]
 ): Promise<RouteResult> {
-  const hub: Waypoint = { name: 'Hub Gudang', lat: 0.71087, lon: -1.29139 };
+  const hub: Waypoint = {
+    task_id: '',
+    name: 'Hub Gudang',
+    lat: 0.71087,
+    lon: -1.29139,
+  };
   const waypoints = [hub, ...dynamicWaypoints];
 
   const distanceMatrix = await fetchDistanceMatrix(waypoints);
