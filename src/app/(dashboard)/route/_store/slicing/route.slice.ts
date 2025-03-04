@@ -1,23 +1,22 @@
 import { type StateCreator } from 'zustand';
 
-type Route = {
-  id: string;
-  date: string;
-  recipient: string;
-  customer: {
-    id: string;
-    name: string;
-    type: string;
-  };
-  startTime: string;
-  endTime: string;
-  duration: string;
-  address: string;
-  coordinates: string;
-  status: 'Berhasil' | 'Berjalan' | 'Selesai';
-  type: string;
-};
-
+// type Route = {
+//   id: string;
+//   date: string;
+//   recipient: string;
+//   customer: {
+//     id: string;
+//     name: string;
+//     type: string;
+//   };
+//   startTime: string;
+//   endTime: string;
+//   duration: string;
+//   address: string;
+//   coordinates: string;
+//   status: 'Berhasil' | 'Berjalan' | 'Selesai';
+//   type: string;
+// };
 export interface Waypoint {
   name: string;
   lat: number;
