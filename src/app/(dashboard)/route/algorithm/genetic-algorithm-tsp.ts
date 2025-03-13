@@ -1,9 +1,4 @@
-interface Waypoint {
-  task_id: string;
-  name: string;
-  lat: number;
-  lon: number;
-}
+import { Waypoint } from "@/lib/types";
 
 interface RouteResult {
   route: Waypoint[];

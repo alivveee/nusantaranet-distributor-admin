@@ -24,7 +24,7 @@ export default function ToDoRoutePage() {
   const [fetchedWaypoints, setFetchedWaypoints] = useState<
     { task_id: string; name: string; lat: number; lon: number }[]
   >([]);
-  const { setWaypoints, waypoints } = useRouteStore();
+  const { setSelectedRoute, setWaypoints, waypoints } = useRouteStore();
   const [asigneeOptions, setAsigneeOptions] = useState<
     { value: string; label: string }[] | undefined
   >([]);
@@ -55,7 +55,8 @@ export default function ToDoRoutePage() {
 
   useEffect(() => {
     setWaypoints([]);
-  }, [setWaypoints]);
+    setSelectedRoute(null);
+  }, [setWaypoints, setSelectedRoute]);
 
   useEffect(() => {
     setWaypoints(fetchedWaypoints);
@@ -112,7 +113,7 @@ export default function ToDoRoutePage() {
               <ItemTaskToDo
                 key={idx}
                 order={idx + 1}
-                custName={waypoint.name}
+                custName={waypoint.name!}
               />
             ))
           ) : (

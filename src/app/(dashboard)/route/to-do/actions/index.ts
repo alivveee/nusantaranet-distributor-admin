@@ -1,9 +1,9 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
+import { Waypoint } from '@/lib/types';
 import { format } from 'date-fns';
 import { revalidatePath, unstable_noStore } from 'next/cache';
-import { Waypoint } from '../../_store/slicing/route.slice';
 
 export default async function addRoute(
   data: { asignee_id: string },

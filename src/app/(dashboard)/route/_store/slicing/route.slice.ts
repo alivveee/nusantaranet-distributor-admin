@@ -1,31 +1,10 @@
+import { IRoute, Waypoint } from '@/lib/types';
 import { type StateCreator } from 'zustand';
 
-type Route = {
-  id: string;
-  date: string;
-  recipient: string;
-  customer: {
-    id: string;
-    name: string;
-    type: string;
-  };
-  startTime: string;
-  endTime: string;
-  duration: string;
-  address: string;
-  coordinates: string;
-  status: 'Berhasil' | 'Berjalan' | 'Selesai';
-  type: string;
-};
-export interface Waypoint {
-  name: string;
-  lat: number;
-  lon: number;
-}
 
 export interface RouteState {
   // values
-  selectedRoute: Route | null;
+  selectedRoute: IRoute | null;
   waypoints: Waypoint[] | [];
 
   // setter

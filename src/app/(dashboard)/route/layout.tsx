@@ -23,7 +23,7 @@ export default function RouteLayout({ children }: RouteLayoutProps) {
         <RouteDetails
           route={selectedRoute}
           onClose={() => {
-            setWaypoints(null);
+            setWaypoints([]);
             setSelectedRoute(null);
           }}
         />

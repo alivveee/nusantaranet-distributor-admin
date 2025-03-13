@@ -1,3 +1,10 @@
+export type Waypoint = {
+  task_id?: string;
+  name?: string;
+  lat: number;
+  lon: number;
+};
+
 export type IProduct = {
   id: string;
   name: string;
@@ -34,9 +41,25 @@ export type ITask = {
   asignee_id: string | null;
   created_at: string;
   type: 'pengiriman' | 'kanvassing';
-  status: string;
+  status: 'dibuat' | 'berjalan' | 'selesai' | 'gagal';
   date: string; // Format yyyy-MM-dd
   asignee: IUser | null;
   customer: ICustomer;
   products: ITaskProduct[];
+};
+
+export type TaskInfo = {
+  task_info: ITask;
+  recipient: string | null;
+  completed_coord: string | null;
+  completed_at: string | null;
+};
+
+export type IRoute = {
+  id: string;
+  asignee_id: string;
+  asignee_name: string;
+  created_at: string;
+  completed_at: string | null;
+  tasks: TaskInfo[];
 };

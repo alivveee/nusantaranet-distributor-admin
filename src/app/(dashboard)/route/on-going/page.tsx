@@ -1,42 +1,33 @@
 'use client';
+import { IRoute } from '@/lib/types';
 import { useEffect, useMemo, useState } from 'react';
-import ItemRouteOnGoing from './item-route-ongoing';
 import useRouteStore from '../_store/useRouteStore';
-
-// Sample data - in a real app, this would come from an API or database
-const routes = [
-  {
-    id: '1',
-    date: 'Selasa, 17 Agustus 2018',
-    recipient: 'Jhon Snow',
-    customer: {
-      id: '5',
-      name: 'Customer 5',
-      type: 'Karyawisng',
-    },
-    startTime: '08:00',
-    endTime: '09:30',
-    duration: '-',
-    address:
-      'Jl. Kendalsari No.06, Jatimulyo, Kec. Lowokwaru, Kota Malang, Jawa Timur 65141',
-    coordinates: 'lihat di maps',
-    status: 'Berhasil' as const,
-    type: 'Pengiriman',
-  },
-  // Add more routes as needed
-];
+import { readRoutes } from './actions';
+import ItemRouteOnGoing from './components/item-route-ongoing';
 
 export default function OnGoingRoutePage() {
   const { selectedRoute, setSelectedRoute, setWaypoints } = useRouteStore();
   const [selectedRouteId, setSelectedRouteId] = useState<string | null>(null);
+  const [fetchedRoute, setFetchedRoutes] = useState<IRoute[]>([]);
 
-  const tSelectedRoute = useMemo(
-    () => routes.find((route) => route.id === selectedRouteId) || null,
-    [selectedRouteId]
+  const dSelectedRoute = useMemo(
+    () => fetchedRoute?.find((route) => route.id === selectedRouteId) || null,
+    [selectedRouteId, fetchedRoute]
   );
+
+  useEffect(() => {
+    const fetchRoutes = async () => {
+      const { data: routes } = await readRoutes();
+      if (routes) {
+        setFetchedRoutes(routes);
+      }
+    };
+    fetchRoutes();
+  }, []);
+
   useEffect(
-    () => setSelectedRoute(tSelectedRoute),
-    [tSelectedRoute, setSelectedRoute]
+    () => setSelectedRoute(dSelectedRoute),
+    [dSelectedRoute, setSelectedRoute]
   );
 
   useEffect(() => {
@@ -45,19 +36,19 @@ export default function OnGoingRoutePage() {
     }
   }, [selectedRoute]);
 
-  useEffect(() => setWaypoints(null), [setWaypoints]);
+  useEffect(() => setWaypoints([]), [setWaypoints]);
 
   return (
     <>
       <header className="p-4 ">
         <h1 className="text-lg font-semibold">
-          Total Kunjungan ({routes.length})
+          Total Kunjungan ({fetchedRoute?.length})
         </h1>
       </header>
       {/* Main content of the sidebar with scroll */}
       <main className="flex-1 overflow-y-auto">
         <div className="h-max">
-          {routes.map((route) => (
+          {fetchedRoute?.map((route) => (
             <ItemRouteOnGoing
               key={route.id}
               route={route}
