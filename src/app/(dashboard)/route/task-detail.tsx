@@ -12,7 +12,7 @@ interface TaskDetailProps {
 
 const TaskDetail: React.FC<TaskDetailProps> = ({ task, order }) => {
   return (
-    <div className="flex flex-col gap-2 w-max-[500px] border-[1px] border-gray-400 py-3 px-4 ">
+    <div className="flex flex-col gap-2 w-max-[500px] border-[1px] border-gray-400 py-2 px-3 ">
       <div className="flex items-center">
         <div className="h-[22px] w-[26px] bg-blue-500 text-white text-sm text-center">
           {order}

@@ -46,7 +46,7 @@ export default function OnGoingRoutePage() {
         </h1>
       </header>
       {/* Main content of the sidebar with scroll */}
-      <main className="flex-1 overflow-y-auto">
+      <main className="flex-1 overflow-y-auto scrollbar">
         <div className="h-max">
           {fetchedRoute?.map((route) => (
             <ItemRouteOnGoing

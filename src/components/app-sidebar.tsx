@@ -14,6 +14,7 @@ import { AiFillDatabase, AiFillSetting } from 'react-icons/ai';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 // Menu items.
 const items = [
@@ -61,7 +62,15 @@ export default function AppSidebar() {
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild size="lg" className="h-10">
+              <SidebarMenuButton
+                asChild
+                size="lg"
+                className={cn(
+                  'h-10',
+                  pathname.startsWith(`/${item.url.split('/')[1]}`) &&
+                    'hover:bg-blue-200'
+                )}
+              >
                 <Link
                   href={item.url}
                   className={`flex gap-2 py-2 px-4 rounded-lg ${

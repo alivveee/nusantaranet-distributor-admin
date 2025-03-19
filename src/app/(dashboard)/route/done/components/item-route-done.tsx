@@ -1,22 +1,19 @@
 import { IRoute, Waypoint } from '@/lib/types';
 import useRouteStore from '../../_store/useRouteStore';
-import { id } from 'date-fns/locale';
-import { format, parseISO } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { readWaypoints } from '../actions';
+import { id } from 'date-fns/locale';
+import { format, parseISO } from 'date-fns';
 
-interface ItemTaskOnGoingProps {
+interface ItemTaskDoneProps {
   route: IRoute;
   onSelect: (id: string) => void;
 }
 
-export default function ItemRouteOnGoing({
-  route,
-  onSelect,
-}: ItemTaskOnGoingProps) {
+export default function ItemRouteDone({ route, onSelect }: ItemTaskDoneProps) {
   const [fetchedWaypoints, setFetchedWaypoints] = useState<Waypoint[]>([]);
   const { setWaypoints } = useRouteStore();
-  
+
   useEffect(() => {
     const fetchWaypoints = async () => {
       const waypointsData = await readWaypoints(route.id);
@@ -28,6 +25,7 @@ export default function ItemRouteOnGoing({
     };
     fetchWaypoints();
   }, [route.id]);
+
   return (
     <button
       onClick={() => {

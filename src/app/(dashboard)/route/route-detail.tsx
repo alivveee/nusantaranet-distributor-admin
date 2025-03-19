@@ -82,7 +82,7 @@ export function RouteDetails({ route, onClose }: RouteDetailsProps) {
                   </div>
                 </div>
               </div>
-              <div className="overflow-x-auto w-full">
+              <div className="overflow-x-auto w-full scrollbar">
                 <div className="flex gap-1 w-max">
                   {route.tasks.map((task, idx) => (
                     <TaskDetail

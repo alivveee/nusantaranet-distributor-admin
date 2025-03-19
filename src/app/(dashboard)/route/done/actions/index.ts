@@ -20,7 +20,7 @@ export async function readRoutes() {
     `
     )
     .order('created_at', { ascending: false })
-    .filter('completed_at', 'is', null);
+    .not('completed_at', 'is', null);
 
   if (result.data) {
     result.data.forEach((route) => {

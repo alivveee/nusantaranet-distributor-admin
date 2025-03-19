@@ -98,7 +98,7 @@ export default function ToDoRoutePage() {
         </h1>
       </header>
       {/* Main content of the sidebar with scroll */}
-      <main className="flex-1 overflow-y-auto">
+      <main className="flex-1 overflow-y-auto scrollbar">
         <div className="h-max">
           {fetchedWaypoints?.length > 0 ? (
             fetchedWaypoints.map((waypoint, idx) => (

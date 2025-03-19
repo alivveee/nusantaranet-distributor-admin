@@ -85,11 +85,17 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@layer utilities {
   .btn-cancel {
     @apply w-[120px] outline outline-1 outline-blue-500 text-blue-500 bg-white hover:text-blue-600 !important;
   }
   .btn-submit {
     @apply w-[120px];
+  }
+  .scrollbar {
+    @apply scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 !important;
   }
 }
 

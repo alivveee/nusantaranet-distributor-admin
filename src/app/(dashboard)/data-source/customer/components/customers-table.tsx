@@ -16,7 +16,7 @@ export default async function CustomersTable() {
   const { data: customers } = await readCustomers();
 
   return (
-    <Table className="border-[1px] border-gray-200">
+    <Table className="border-[1px] border-gray-200 ">
       <TableHeader>
         <TableRow>
           <TableHead>Nomor</TableHead>
