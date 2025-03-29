@@ -94,7 +94,7 @@ export default function ToDoRoutePage() {
     <>
       <header className="p-4 ">
         <h1 className="text-lg font-semibold">
-          Tugas Hari Ini ({waypoints?.length})
+          Kunjungan Hari Ini ({waypoints?.length})
         </h1>
       </header>
       {/* Main content of the sidebar with scroll */}
