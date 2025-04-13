@@ -15,7 +15,8 @@ export async function readRoutes() {
       task_info:tasks(*,customer:customers(name, coordinate, address)), 
       recipient, 
       completed_at,
-      completed_coord
+      completed_coord,
+      task_order
     )
     `
     )
