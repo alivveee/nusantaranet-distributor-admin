@@ -41,7 +41,7 @@ export type ITask = {
   asignee_id: string | null;
   created_at: string;
   type: 'pengiriman' | 'kanvassing';
-  status: 'dibuat' | 'berjalan' | 'selesai' | 'gagal';
+  status: 'dibuat' | 'berjalan' | 'berhasil' | 'gagal';
   date: string; // Format yyyy-MM-dd
   asignee: IUser | null;
   customer: ICustomer;

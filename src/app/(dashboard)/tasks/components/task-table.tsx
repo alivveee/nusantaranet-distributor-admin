@@ -44,7 +44,7 @@ export default async function TaskTable() {
             <TableCell>
               <Badge
                 className={cn(
-                  task.status === 'selesai'
+                  task.status === 'berhasil'
                     ? 'bg-green-500 hover:bg-green-600'
                     : task.status === 'dibuat'
                       ? 'bg-yellow-500 hover:bg-yellow-600'
@@ -54,7 +54,7 @@ export default async function TaskTable() {
                   'w-[80px] flex justify-center'
                 )}
               >
-                {task.status === 'selesai'
+                {task.status === 'berhasil'
                   ? 'Selesai'
                   : task.status === 'dibuat'
                     ? 'Dibuat'

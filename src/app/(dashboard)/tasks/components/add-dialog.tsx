@@ -29,6 +29,11 @@ const taskSchema = z.object({
   date: z.string().nonempty('Tanggal harus diisi'),
 });
 
+const typeOptions = [
+  { value: 'pengiriman', label: 'pengiriman' },
+  { value: 'kanvassing', label: 'kanvassing' },
+];
+
 type TaskForm = z.infer<typeof taskSchema>;
 
 export default function AddTaskDialog() {
@@ -39,11 +44,6 @@ export default function AddTaskDialog() {
     { value: string; label: string }[] | undefined
   >([]);
   const [customerDetail, setCustomerDetail] = useState<ICustomer | undefined>();
-
-  const typeOptions = [
-    { value: 'pengiriman', label: 'pengiriman' },
-    { value: 'kanvassing', label: 'kanvassing' },
-  ];
 
   const methods = useForm<TaskForm>({
     resolver: zodResolver(taskSchema),
