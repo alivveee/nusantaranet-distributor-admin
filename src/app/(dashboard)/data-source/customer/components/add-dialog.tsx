@@ -39,7 +39,7 @@ export default function AddCustomerDialog() {
     },
   });
 
-  const onSubmit = (data: TaskForm) => {
+  const onAddSubmit = (data: TaskForm) => {
     startTransition(async () => {
       const result = await addCustomer(data);
       const { error } = JSON.parse(result);
@@ -75,7 +75,7 @@ export default function AddCustomerDialog() {
         <DialogMainContent>
           <FormProvider {...methods}>
             <form
-              onSubmit={methods.handleSubmit(onSubmit)}
+              onSubmit={methods.handleSubmit(onAddSubmit)}
               className="w-full flex flex-col gap-3"
             >
               <InputField

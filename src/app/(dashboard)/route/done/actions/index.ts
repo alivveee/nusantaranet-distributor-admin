@@ -11,9 +11,9 @@ export async function readRoutes() {
     .select(
       `
     *, 
-    tasks:route_tasks(
-      task_info:tasks(*,customer:customers(name, coordinate, address)), 
-      recipient, 
+    tasks:route_tasks_report(
+      task_info:tasks(*,customer:customers(name, coordinate, address)),
+      recipient,
       completed_at,
       completed_coord
     )
@@ -39,7 +39,7 @@ export async function readWaypoints(route_id: string) {
 
   const supabase = await createClient();
   const result = await supabase
-    .from('route_tasks')
+    .from('route_tasks_report')
     .select('task:tasks(customer:customers(name, coordinate))')
     .eq('route_id', route_id)
     .order('task_order', { ascending: true });

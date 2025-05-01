@@ -80,7 +80,7 @@ export default function ToDoRoutePage() {
     });
   };
 
-  const handleCalculateRoute = () => {
+  const handleOptimateRoute = () => {
     startTransition(async () => {
       const { route, distance } = await calculateOptimalRoute(fetchedWaypoints);
       setWaypoints(route);
@@ -138,7 +138,7 @@ export default function ToDoRoutePage() {
             <div className="grid grid-cols-2 gap-2">
               <Button
                 className=" bg-green-600 hover:bg-green-500"
-                onClick={() => handleCalculateRoute()}
+                onClick={() => handleOptimateRoute()}
                 type="button"
               >
                 Optimalkan{' '}

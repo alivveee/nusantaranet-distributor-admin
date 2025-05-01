@@ -108,7 +108,6 @@ export async function readTasks() {
       `
       *, 
       products:task_products(product_id, product_name, quantity), 
-      asignee:users(id, name, phone), 
       customer:customers(id, name, address)
       `
     )

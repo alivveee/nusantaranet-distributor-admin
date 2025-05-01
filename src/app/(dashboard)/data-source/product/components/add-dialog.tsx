@@ -34,7 +34,7 @@ export default function AddProductDialog() {
     },
   });
 
-  const onSubmit = (data: TaskForm) => {
+  const onAddSubmit = (data: TaskForm) => {
     startTransition(async () => {
       const result = await addProduct(data);
       const { error } = JSON.parse(result);
@@ -70,7 +70,7 @@ export default function AddProductDialog() {
         <DialogMainContent>
           <FormProvider {...methods}>
             <form
-              onSubmit={methods.handleSubmit(onSubmit)}
+              onSubmit={methods.handleSubmit(onAddSubmit)}
               className="w-full flex flex-col gap-3"
             >
               <InputField

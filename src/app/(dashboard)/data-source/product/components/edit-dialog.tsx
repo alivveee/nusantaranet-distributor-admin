@@ -41,7 +41,7 @@ export default function EditProductDialog({
     },
   });
 
-  const onSubmit = (data: TaskForm) => {
+  const onEditSubmit = (data: TaskForm) => {
     startTransition(async () => {
       const result = await updateProduct(product.id, data);
       const { error } = JSON.parse(result);
@@ -75,7 +75,7 @@ export default function EditProductDialog({
         <DialogMainContent>
           <FormProvider {...methods}>
             <form
-              onSubmit={methods.handleSubmit(onSubmit)}
+              onSubmit={methods.handleSubmit(onEditSubmit)}
               className="w-full flex flex-col gap-3"
             >
               <InputField

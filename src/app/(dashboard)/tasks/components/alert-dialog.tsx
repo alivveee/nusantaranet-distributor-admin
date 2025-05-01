@@ -22,7 +22,7 @@ export function AlertDialogDelete({
 }) {
   const [isPending, startTransition] = useTransition();
 
-  const onSubmit = () => {
+  const onDeleteSubmit = () => {
     startTransition(async () => {
       const result = await deleteTask(id);
       const { error } = JSON.parse(result);
@@ -53,7 +53,7 @@ export function AlertDialogDelete({
           <AlertDialogCancel className="btn-cancel">Batal</AlertDialogCancel>
           <AlertDialogAction
             className="btn-submit"
-            onClick={onSubmit}
+            onClick={onDeleteSubmit}
             disabled={isPending}
           >
             Hapus

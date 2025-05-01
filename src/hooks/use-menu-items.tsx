@@ -8,9 +8,9 @@ type MenuItem = {
 
 const tasksItems: MenuItem[] = [{ title: 'Tugas', url: '#' }];
 const routeItems: MenuItem[] = [
-  { title: 'To-do', url: '/route/to-do' },
-  { title: 'On-Going', url: '/route/on-going' },
-  { title: 'Done', url: '/route/done' },
+  { title: 'Rencana', url: '/route/to-do' },
+  { title: 'Berjalan', url: '/route/on-going' },
+  { title: 'Selesai', url: '/route/done' },
 ];
 const dataSourceItems: MenuItem[] = [
   { title: 'Customer', url: '/data-source/customer' },

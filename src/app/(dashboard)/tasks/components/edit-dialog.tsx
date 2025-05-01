@@ -96,7 +96,7 @@ export default function EditTaskDialog({
     setProducts(updatedProducts);
   };
 
-  const onSubmit = (data: TaskForm) => {
+  const onEditSubmit = (data: TaskForm) => {
     startTransition(async () => {
       const result = await updateTask(task.id, data, products);
       const { error } = JSON.parse(result);
@@ -133,7 +133,7 @@ export default function EditTaskDialog({
         <DialogMainContent>
           <FormProvider {...methods}>
             <form
-              onSubmit={methods.handleSubmit(onSubmit)}
+              onSubmit={methods.handleSubmit(onEditSubmit)}
               className="w-full flex flex-col gap-3"
             >
               <div className="grid grid-cols-2 gap-4">
