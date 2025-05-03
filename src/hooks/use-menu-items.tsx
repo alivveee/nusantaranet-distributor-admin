@@ -16,7 +16,7 @@ const dataSourceItems: MenuItem[] = [
   { title: 'Customer', url: '/data-source/customer' },
   { title: 'Produk', url: '/data-source/product' },
 ];
-const settingsItems: MenuItem[] = [{ title: 'Users', url: '/settings/users' }];
+const settingsItems: MenuItem[] = [{ title: 'Akun Karyawan', url: '/settings/users' }];
 
 export function useMenuItems() {
   const pathname = usePathname();

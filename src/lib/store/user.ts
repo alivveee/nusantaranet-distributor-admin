@@ -5,6 +5,6 @@ interface UserState {
   user: User | null;
 }
 
-export const useUserStore = create<UserState>((set) => ({
+export const useUserStore = create<UserState>(() => ({
   user: null,
 }));

@@ -6,7 +6,7 @@ export default function UsersPage() {
   return (
     <MainContainer>
       <div className="w-full h-[86px] py-4 flex justify-between items-center">
-        <h1 className="text-xl font-semibold text-gray-700">Daftar User</h1>
+        <h1 className="text-xl font-semibold text-gray-700">Daftar Akun Karyawan</h1>
         <AddUserDialog />
       </div>
       <UsersTable />
