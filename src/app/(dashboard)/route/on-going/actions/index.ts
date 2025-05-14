@@ -41,7 +41,7 @@ export async function readWaypoints(route_id: string) {
   const supabase = await createClient();
   const result = await supabase
     .from('reports')
-    .select('task:tasks(customer:customers(name, coordinate))')
+    .select('tasks(status, customer:customers(name, coordinate))')
     .eq('route_id', route_id)
     .order('task_order', { ascending: true });
 
@@ -49,11 +49,14 @@ export async function readWaypoints(route_id: string) {
   const waypoints = result.data?.map((data) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const [lat, lon] = data.task.customer.coordinate.split(',').map(Number);
+    const [lat, lon] = data.tasks.customer.coordinate.split(',').map(Number);
     return {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      name: data.task.customer.name,
+      name: data.tasks.customer.name,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      status: data.tasks.status,
       lat,
       lon,
     };

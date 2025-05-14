@@ -1,6 +1,7 @@
 export type Waypoint = {
   task_id?: string;
   name?: string;
+  status: 'dibuat' | 'berjalan' | 'berhasil' | 'gagal';
   lat: number;
   lon: number;
 };

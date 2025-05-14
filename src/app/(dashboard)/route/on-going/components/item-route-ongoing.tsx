@@ -16,7 +16,7 @@ export default function ItemRouteOnGoing({
 }: ItemTaskOnGoingProps) {
   const [fetchedWaypoints, setFetchedWaypoints] = useState<Waypoint[]>([]);
   const { setWaypoints } = useRouteStore();
-  
+
   useEffect(() => {
     const fetchWaypoints = async () => {
       const waypointsData = await readWaypoints(route.id);
@@ -28,6 +28,12 @@ export default function ItemRouteOnGoing({
     };
     fetchWaypoints();
   }, [route.id]);
+
+  const totalSuccess = route.tasks.filter(
+    (task) =>
+      task.task_info.status === 'berhasil' || task.task_info.status === 'gagal'
+  ).length;
+
   return (
     <button
       onClick={() => {
@@ -44,7 +50,7 @@ export default function ItemRouteOnGoing({
         </h1>
         <p className="text-sm text-gray-500 text-start">{route.asignee_name}</p>
       </div>
-      <p className="text-sm font-semibold text-red-500">Selesai 3/6</p>
+      <p className="text-sm font-semibold text-red-500">{`Selesai ${totalSuccess}/${route.tasks.length}`}</p>
     </button>
   );
 }

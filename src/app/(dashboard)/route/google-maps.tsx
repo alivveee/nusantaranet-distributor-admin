@@ -1,9 +1,17 @@
 import { AdvancedMarker, APIProvider, Map } from '@vis.gl/react-google-maps';
 import { MdHomeFilled } from 'react-icons/md';
 import useRouteStore from './_store/useRouteStore';
+import { cn } from '@/lib/utils';
+
+const pointColor = {
+  berjalan: 'bg-blue-500',
+  berhasil: 'bg-green-500',
+  gagal: 'bg-red-500',
+  dibuat: 'bg-yellow-500',
+};
 
 export default function GoogleMapComponent() {
-  // Default position
+  // Warehouse position
   const position = { lat: -7.777375888682844, lng: 113.45324294849655 };
 
   const { waypoints } = useRouteStore();
@@ -21,7 +29,12 @@ export default function GoogleMapComponent() {
             key={idx}
             position={{ lat: waypoint.lat, lng: waypoint.lon }}
           >
-            <div className="h-[22px] w-[26px] bg-blue-500 text-white text-sm text-center">
+            <div
+              className={cn(
+                'h-[22px] w-[26px] bg-blue-500 text-white text-sm text-center',
+                pointColor[waypoint.status]
+              )}
+            >
               {idx + 1}
             </div>
           </AdvancedMarker>

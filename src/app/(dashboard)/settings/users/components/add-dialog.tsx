@@ -50,9 +50,7 @@ export default function AddUserDialog() {
 
   const onSubmit = (data: TaskForm) => {
     startTransition(async () => {
-      const result = await createUser(data);
-
-      const { error } = JSON.parse(result);
+      const { error } = JSON.parse(await createUser(data));
 
       if (error) {
         toast('Gagal menambahkan user', {

@@ -32,7 +32,7 @@ const TaskDetail: React.FC<TaskDetailProps> = ({ task, order }) => {
           <InfoItem title="Status">
             <Badge
               className={`${
-                task.task_info.status === 'selesai'
+                task.task_info.status === 'berhasil'
                   ? 'bg-green-500'
                   : task.task_info.status === 'dibuat'
                     ? 'bg-yellow-500'
@@ -41,8 +41,8 @@ const TaskDetail: React.FC<TaskDetailProps> = ({ task, order }) => {
                       : 'bg-red-500'
               } w-[80px] flex justify-center`}
             >
-              {task.task_info.status === 'selesai'
-                ? 'Selesai'
+              {task.task_info.status === 'berhasil'
+                ? 'Berhasil'
                 : task.task_info.status === 'dibuat'
                   ? 'Menunggu'
                   : task.task_info.status === 'berjalan'
