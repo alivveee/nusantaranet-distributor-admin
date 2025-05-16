@@ -41,26 +41,25 @@ export async function readWaypoints() {
   const today = format(new Date(), 'yyyy-MM-dd');
   const result = await supabase
     .from('tasks')
-    .select('id,customer:customers(name, coordinate)')
+    .select('id, customer:customers(name, coordinate)')
     .eq('date', today)
     .eq('status', 'dibuat');
 
-  // Pastikan hanya data yang memiliki customers & coordinate yang diolah
-  const waypoints = result.data?.map((task) => {
+  const waypoints = result.data?.map((data) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const [lat, lon] = task.customer.coordinate.split(',').map(Number);
+    const [lat, lon] = data.customer.coordinate.split(',').map(Number);
     return {
-      task_id: task.id,
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      name: task.customer.name,
+      name: data.customer.name,
+      task_id: data.id,
       lat,
       lon,
     };
   });
 
-  return waypoints; // Pastikan return array kosong jika tidak ada data
+  return waypoints;
 }
 
 export async function readAsigneeOptions() {

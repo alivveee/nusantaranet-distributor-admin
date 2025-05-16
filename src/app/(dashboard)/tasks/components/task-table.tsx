@@ -1,36 +1,37 @@
-  import { Badge } from '@/components/ui/badge';
-  import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-  } from '@/components/ui/table';
-  import { readTasks } from '../actions';
-  import { ITask } from '@/lib/types';
-  import { cn, formatDate } from '@/lib/utils';
-  import ProductViewButton from './product-view-button';
-  import ActionMenu from './action-menu';
+import { Badge } from '@/components/ui/badge';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { readTasks } from '../actions';
+import { ITask } from '@/lib/types';
+import { cn, formatDate } from '@/lib/utils';
+import ProductViewButton from './product-view-button';
+import ActionMenu from './action-menu';
 
-  export default async function TaskTable() {
-    const { data: tasks } = await readTasks();
+export default async function TaskTable() {
+  const { data: tasks } = await readTasks();
 
-    return (
-      <Table className="border-[1px] border-gray-200">
-        <TableHeader>
-          <TableRow>
-            <TableHead>Jenis</TableHead>
-            <TableHead>Nama Customer</TableHead>
-            <TableHead>Alamat</TableHead>
-            <TableHead>Tanggal</TableHead>
-            <TableHead>Produk</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Aksi</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {(tasks as ITask[])?.map((task) => (
+  return (
+    <Table className="border-[1px] border-gray-200">
+      <TableHeader>
+        <TableRow>
+          <TableHead>Jenis</TableHead>
+          <TableHead>Nama Customer</TableHead>
+          <TableHead>Alamat</TableHead>
+          <TableHead>Tanggal</TableHead>
+          <TableHead>Produk</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead>Aksi</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {Array.isArray(tasks) && tasks?.length > 0 ? (
+          (tasks as ITask[])?.map((task) => (
             <TableRow key={task.id}>
               <TableCell>{task.type}</TableCell>
               <TableCell>{task.customer.name}</TableCell>
@@ -65,8 +66,15 @@
                 <ActionMenu task={task} />
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    );
-  }
+          ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan={7} className="text-center">
+              Belum ada data
+            </TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
+  );
+}

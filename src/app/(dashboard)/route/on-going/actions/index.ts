@@ -45,7 +45,6 @@ export async function readWaypoints(route_id: string) {
     .eq('route_id', route_id)
     .order('task_order', { ascending: true });
 
-  //   Pastikan hanya data yang memiliki customers & coordinate yang diolah
   const waypoints = result.data?.map((data) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -62,5 +61,5 @@ export async function readWaypoints(route_id: string) {
     };
   });
 
-  return waypoints; // Pastikan return array kosong jika tidak ada data
+  return waypoints; 
 }

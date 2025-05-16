@@ -111,7 +111,7 @@ export async function readTasks() {
       customer:customers(id, name, address)
       `
     )
-    .order('date', { ascending: false });
+    .order('created_at', { ascending: false });
   return result;
 }
 

@@ -12,6 +12,7 @@ import SelectField from '@/components/select-field';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { Waypoint } from '@/lib/types';
 
 const routeSchema = z.object({
   asignee_id: z.string().nonempty('Penerima tugas harus diisi'),
@@ -21,9 +22,7 @@ type RouteForm = z.infer<typeof routeSchema>;
 
 export default function ToDoRoutePage() {
   const [isPending, startTransition] = useTransition();
-  const [fetchedWaypoints, setFetchedWaypoints] = useState<
-    { task_id: string; name: string; lat: number; lon: number }[]
-  >([]);
+  const [fetchedWaypoints, setFetchedWaypoints] = useState<Waypoint[]>([]);
   const { setSelectedRoute, setWaypoints, waypoints } = useRouteStore();
   const [asigneeOptions, setAsigneeOptions] = useState<
     { value: string; label: string }[] | undefined
@@ -64,8 +63,7 @@ export default function ToDoRoutePage() {
 
   const onSubmit = (data: RouteForm) => {
     startTransition(async () => {
-      const result = await addRoute(data, waypoints);
-      const { error } = JSON.parse(result);
+      const { error } = JSON.parse(await addRoute(data, waypoints));
 
       if (error) {
         toast('Gagal menambahkan rute', {
@@ -105,7 +103,7 @@ export default function ToDoRoutePage() {
               <ItemTaskToDo
                 key={idx}
                 order={idx + 1}
-                custName={waypoint.name}
+                custName={waypoint.name!}
               />
             ))
           ) : waypoints?.length > 0 ? (

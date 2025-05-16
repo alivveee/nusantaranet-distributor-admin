@@ -8,7 +8,8 @@ interface RouteLayoutProps {
 }
 
 export default function RouteLayout({ children }: RouteLayoutProps) {
-  const { selectedRoute, setSelectedRoute, setWaypoints } = useRouteStore();
+  const { selectedRoute, setSelectedRoute, setSelectedRouteId, setWaypoints } =
+    useRouteStore();
   return (
     <div className="w-full h-full flex relative overflow-hidden">
       {/* Sidebar */}
@@ -25,6 +26,7 @@ export default function RouteLayout({ children }: RouteLayoutProps) {
           onClose={() => {
             setWaypoints([]);
             setSelectedRoute(null);
+            setSelectedRouteId(null);
           }}
         />
       </div>

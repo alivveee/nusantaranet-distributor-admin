@@ -32,7 +32,7 @@ export default function GoogleMapComponent() {
             <div
               className={cn(
                 'h-[22px] w-[26px] bg-blue-500 text-white text-sm text-center',
-                pointColor[waypoint.status]
+                pointColor[waypoint.status!]
               )}
             >
               {idx + 1}
