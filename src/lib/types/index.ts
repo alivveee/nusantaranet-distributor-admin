@@ -32,7 +32,7 @@ export type IUser = {
 
 export type ITaskProduct = {
   product_id: string;
-  product_name: string;
+  product_info: { name: string };
   quantity: number;
 };
 
@@ -52,8 +52,9 @@ export type ITask = {
 export type TaskInfo = {
   task_info: ITask;
   recipient: string | null;
-  completed_coord: string | null;
+  completed_coord: { latitude: number; longitude: number } | undefined;
   completed_at: string | null;
+  products: ITaskProduct[];
 };
 
 export type IRoute = {

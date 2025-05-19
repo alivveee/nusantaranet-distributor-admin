@@ -13,7 +13,7 @@ import { useTransition } from 'react';
 import { toast } from 'sonner';
 import { deleteTask } from '../actions';
 
-export function AlertDialogDelete({
+export function DeleteAlertDialog({
   Trigger,
   id,
 }: {

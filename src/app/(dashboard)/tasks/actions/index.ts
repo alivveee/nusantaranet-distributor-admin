@@ -29,8 +29,9 @@ export default async function addTask(
   } else {
     // memasukkan setiap produk ke task_products
     const taskProducts = products.map((product) => ({
-      ...product,
+      product_id: product.product_id,
       task_id: createTaskResult.data?.id,
+      quantity: product.quantity,
     }));
 
     const createTaskProductsResult = await supabase
@@ -67,8 +68,9 @@ export async function updateTask(
       .from('task_products')
       .upsert(
         products.map((product) => ({
-          ...product,
+          product_id: product.product_id,
           task_id: id, // Pastikan task_id selalu di-set
+          quantity: product.quantity,
         })),
         { onConflict: 'task_id,product_id' } // Pastikan berdasarkan primary key atau unique constraint
       );
@@ -107,7 +109,7 @@ export async function readTasks() {
     .select(
       `
       *, 
-      products:task_products(product_id, product_name, quantity), 
+      products:task_products(product_id, quantity, product_info:products(name)),
       customer:customers(id, name, address)
       `
     )

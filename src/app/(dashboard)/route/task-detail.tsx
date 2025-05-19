@@ -1,3 +1,4 @@
+import ProductViewButton from '@/components/product-view-button';
 import { Badge } from '@/components/ui/badge';
 import { TaskInfo } from '@/lib/types';
 import { cn, openGoogleMaps } from '@/lib/utils';
@@ -12,18 +13,18 @@ interface TaskDetailProps {
 
 const TaskDetail: React.FC<TaskDetailProps> = ({ task, order }) => {
   return (
-    <div className="flex flex-col gap-2 w-max-[500px] border-[1px] border-gray-400 py-2 px-3 ">
+    <div className="flex flex-col gap-2 border-[1px] border-gray-400 py-2 px-3 ">
       <div className="flex items-center">
         <div
           className={cn(
-            'h-[22px] w-[26px] bg-blue-500 text-white text-sm text-center',
+            'h-[22px] w-[26px] text-white text-sm text-center',
             task.task_info.status === 'berhasil'
-              ? 'bg-green-500'
+              ? 'bg-green-500 hover:bg-green-600'
               : task.task_info.status === 'dibuat'
-                ? 'bg-yellow-500'
+                ? 'bg-yellow-500 hover:bg-yellow-600'
                 : task.task_info.status === 'berjalan'
-                  ? 'bg-blue-500'
-                  : 'bg-red-500'
+                  ? 'bg-blue-500 hover:bg-blue-600'
+                  : 'bg-red-500 hover:bg-red-600'
           )}
         >
           {order}
@@ -33,23 +34,23 @@ const TaskDetail: React.FC<TaskDetailProps> = ({ task, order }) => {
       <div className="flex gap-4">
         <div className="flex flex-col gap-3 w-[200px]">
           <InfoItem title="Alamat">
-            <span className="text-sm">{task.task_info.customer.address}</span>
+            <p className="text-sm">{task.task_info.customer.address}</p>
+          </InfoItem>
+          <InfoItem title="Jenis">
+            <p className="text-sm">{task.task_info.type}</p>
           </InfoItem>
         </div>
         <div className="flex flex-col gap-1">
-          <InfoItem title="Jenis">
-            <span className="text-sm">{task.task_info.type}</span>
-          </InfoItem>
           <InfoItem title="Status">
             <Badge
               className={`${
                 task.task_info.status === 'berhasil'
-                  ? 'bg-green-500'
+                  ? 'bg-green-500 hover:bg-green-600'
                   : task.task_info.status === 'dibuat'
-                    ? 'bg-yellow-500'
+                    ? 'bg-yellow-500 hover:bg-yellow-600'
                     : task.task_info.status === 'berjalan'
-                      ? 'bg-blue-500'
-                      : 'bg-red-500'
+                      ? 'bg-blue-500 hover:bg-blue-600'
+                      : 'bg-red-500 hover:bg-red-600'
               } w-[80px] flex justify-center`}
             >
               {task.task_info.status === 'berhasil'
@@ -62,30 +63,43 @@ const TaskDetail: React.FC<TaskDetailProps> = ({ task, order }) => {
             </Badge>
           </InfoItem>
           <InfoItem title="Pukul">
-            <span>
+            <p className="text-sm">
               {task.completed_at
                 ? format(new Date(task.completed_at), 'dd MMMM yyyy HH:mm', {
                     locale: id,
                   })
                 : '-'}
-            </span>
+            </p>
           </InfoItem>
-        </div>
-        <div className="flex flex-col gap-1">
           <InfoItem title="Koordinat Selesai">
-            <span className="text-blue-500 cursor-pointer text-sm">
+            {task.completed_coord ? (
               <a
+                className="text-blue-500 text-sm hover:underline"
                 rel="stylesheet"
                 onClick={() => {
-                  openGoogleMaps(task.task_info.customer.coordinate);
+                  openGoogleMaps(task.completed_coord);
                 }}
               >
                 lihat di maps
               </a>
-            </span>
+            ) : (
+              <p>-</p>
+            )}
           </InfoItem>
+        </div>
+        <div className="flex flex-col gap-1">
           <InfoItem title="Penerima">
-            <span>{task.recipient ? task.recipient : '-'}</span>
+            <p className="text-sm">{task.recipient ? task.recipient : '-'}</p>
+          </InfoItem>
+          <InfoItem title="Keterangan">
+            <p className="text-sm">
+              {task.recipient ? task.recipient : 'owner tidak ada/gudang tutup'}
+            </p>
+          </InfoItem>
+          <InfoItem title="Daftar Produk">
+            <div>
+              <ProductViewButton products={task.products} />
+            </div>
           </InfoItem>
         </div>
       </div>

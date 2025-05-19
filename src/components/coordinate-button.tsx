@@ -20,7 +20,7 @@ export default function CoordinateButton({
         <TooltipTrigger asChild>
           <button
             className="flex items-center text-gray-600"
-            onClick={() => openGoogleMaps(coordinate)}
+            onClick={() => openGoogleMaps(undefined, coordinate)}
           >
             <FaMapMarkerAlt size={18} />
           </button>

@@ -2,7 +2,7 @@
 import { ITask } from '@/lib/types';
 import { BiSolidEdit } from 'react-icons/bi';
 import { MdDelete } from 'react-icons/md';
-import { AlertDialogDelete } from './alert-dialog';
+import { DeleteAlertDialog } from './alert-dialog';
 import EditTaskDialog from './edit-dialog';
 
 export default function ActionMenu({ task }: { task: ITask }) {
@@ -17,7 +17,7 @@ export default function ActionMenu({ task }: { task: ITask }) {
         }
       />
 
-      <AlertDialogDelete
+      <DeleteAlertDialog
         Trigger={
           <button className="text-gray-600">
             <MdDelete size={18} />

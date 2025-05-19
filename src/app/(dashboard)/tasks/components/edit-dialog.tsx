@@ -164,7 +164,7 @@ export default function EditTaskDialog({
                 placeholder="Masukkan titik koordinat"
                 iconButton={<LuMapPinned />}
                 onIconClick={() => {
-                  openGoogleMaps(customerDetail?.coordinate);
+                  openGoogleMaps(undefined, customerDetail?.coordinate);
                 }}
                 disabled={true}
               />

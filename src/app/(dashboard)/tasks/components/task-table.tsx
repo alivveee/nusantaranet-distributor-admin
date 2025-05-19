@@ -10,7 +10,7 @@ import {
 import { readTasks } from '../actions';
 import { ITask } from '@/lib/types';
 import { cn, formatDate } from '@/lib/utils';
-import ProductViewButton from './product-view-button';
+import ProductViewButton from '../../../../components/product-view-button';
 import ActionMenu from './action-menu';
 
 export default async function TaskTable() {

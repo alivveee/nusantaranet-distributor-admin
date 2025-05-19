@@ -13,6 +13,7 @@ export async function readRoutes() {
     *, 
     tasks:reports(
       task_info:tasks(*,customer:customers(name, coordinate, address)),
+      products:report_products(product_info:products(name), quantity), 
       recipient,
       completed_at,
       completed_coord

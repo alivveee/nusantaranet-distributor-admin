@@ -40,7 +40,7 @@ export function RouteDetails({ route, onClose }: RouteDetailsProps) {
               </button>
             </header>
 
-            <div className="flex gap-6 p-4">
+            <div className="flex gap-6 px-4 py-2">
               <div className="w-[400px]">
                 <div>
                   <div className="flex justify-between mb-1">

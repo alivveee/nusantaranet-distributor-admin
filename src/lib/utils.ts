@@ -11,9 +11,22 @@ export function formatDate(dateString: string) {
   return format(new Date(dateString), 'dd MMMM yyyy', { locale: id });
 }
 
-export function openGoogleMaps(coordinate?: string) {
-  const url = `https://www.google.com/maps?q=${coordinate}`;
-  if (coordinate) {
-    window.open(url, '_blank');
+export function openGoogleMaps(
+  coordinate?: {
+    latitude: number;
+    longitude: number;
+  },
+  stringCoordinate?: string
+) {
+  // Jika ada stringCoordinate, gunakan stringCoordinate
+  if (stringCoordinate) {
+    const [lat, lon] = stringCoordinate.split(',').map(Number);
+    window.open(`https://www.google.com/maps?q=${lat},${lon}`, '_blank');
+    return;
   }
+  if (!coordinate) return;
+  // Jika tidak ada stringCoordinate, gunakan latitude dan longitude dari coordinate
+  const { latitude, longitude } = coordinate;
+  const url = `https://www.google.com/maps?q=${latitude},${longitude}`;
+  window.open(url, '_blank');
 }

@@ -39,11 +39,11 @@ type TaskForm = z.infer<typeof taskSchema>;
 export default function AddTaskDialog() {
   const [isPending, startTransition] = useTransition();
   const [isOpen, setIsOpen] = useState(false);
-  const [products, setProducts] = useState<ITaskProduct[]>([]);
   const [customerOptions, setCustomerOptions] = useState<
     { value: string; label: string }[] | undefined
   >([]);
   const [customerDetail, setCustomerDetail] = useState<ICustomer | undefined>();
+  const [products, setProducts] = useState<ITaskProduct[]>([]);
 
   const methods = useForm<TaskForm>({
     resolver: zodResolver(taskSchema),
@@ -154,7 +154,7 @@ export default function AddTaskDialog() {
                 placeholder="Masukkan titik koordinat"
                 iconButton={<LuMapPinned />}
                 onIconClick={() => {
-                  openGoogleMaps(customerDetail?.coordinate);
+                  openGoogleMaps(undefined, customerDetail?.coordinate);
                 }}
                 disabled={true}
               />

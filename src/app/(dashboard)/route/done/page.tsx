@@ -34,12 +34,6 @@ export default function DoneRoutePage() {
     const { data: routes } = await readRoutes();
     if (routes) {
       setFetchedRoutes(routes);
-      // If there are routes and no route is selected, select the first one
-      if (routes.length > 0) {
-        const firstRoute = routes[0];
-        setSelectedRouteId(firstRoute.id);
-        fetchWaypoints(firstRoute.id);
-      }
     }
   };
 

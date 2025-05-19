@@ -11,7 +11,7 @@ export default async function addRoute(
 ) {
   const supabase = await createClient();
 
-  // Pastikan tasks dikirim sebagai JSONB, bukan string JSON
+  // tasks dikirim sebagai JSONB
   const tasks = route.map((waypoint, idx) => ({
     task_id: waypoint.task_id,
     task_order: idx + 1,

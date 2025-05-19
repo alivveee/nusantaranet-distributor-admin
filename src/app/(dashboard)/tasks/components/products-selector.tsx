@@ -53,7 +53,9 @@ export function ProductSelector({
         ...products,
         {
           product_id: selectedProduct,
-          product_name: productToAdd.label,
+          product_info: {
+            name: productToAdd.label,
+          },
           quantity: 1,
         }, // Default quantity 0
       ]);
@@ -142,7 +144,9 @@ export function ProductSelector({
               <Trash2 />
             </Button>
 
-            <span className="flex-1 px-4 text-sm">{product.product_name}</span>
+            <span className="flex-1 px-4 text-sm">
+              {product.product_info?.name}
+            </span>
 
             <div className="flex items-center gap-2">
               <Button
