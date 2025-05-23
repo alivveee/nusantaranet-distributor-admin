@@ -3,7 +3,7 @@ import { IProduct } from '@/lib/types';
 import { BiSolidEdit } from 'react-icons/bi';
 import { MdDelete } from 'react-icons/md';
 import EditProductDialog from './edit-dialog';
-import { AlertDialogDelete } from './alert-dialog';
+import { DeleteAlertDialog } from './alert-dialog';
 
 export default function ActionMenu({ product }: { product: IProduct }) {
   return (
@@ -16,7 +16,7 @@ export default function ActionMenu({ product }: { product: IProduct }) {
           </button>
         }
       />
-      <AlertDialogDelete
+      <DeleteAlertDialog
         id={product.id}
         Trigger={
           <button className="text-gray-600">

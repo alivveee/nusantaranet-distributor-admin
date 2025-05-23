@@ -22,6 +22,7 @@ import { ICustomer, ITaskProduct } from '@/lib/types';
 import { readCustomerById } from '../../data-source/customer/actions';
 import { openGoogleMaps } from '@/lib/utils';
 import { toast } from 'sonner';
+import { format } from 'date-fns';
 
 const taskSchema = z.object({
   type: z.enum(['pengiriman', 'kanvassing']),
@@ -50,7 +51,7 @@ export default function AddTaskDialog() {
     defaultValues: {
       type: 'pengiriman',
       customer_id: '',
-      date: new Date().toISOString().split('T')[0],
+      date: format(new Date(), 'yyyy-MM-dd'),
     },
   });
 
