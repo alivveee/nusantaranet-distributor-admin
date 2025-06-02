@@ -98,16 +98,16 @@ export default function ToDoRoutePage() {
       {/* Main content of the sidebar with scroll */}
       <main className="flex-1 overflow-y-auto scrollbar">
         <div className="h-max">
-          {fetchedWaypoints?.length > 0 ? (
-            fetchedWaypoints.map((waypoint, idx) => (
+          {waypoints?.length > 0 ? (
+            waypoints.map((waypoint, idx) => (
               <ItemTaskToDo
                 key={idx}
                 order={idx + 1}
                 custName={waypoint.name!}
               />
             ))
-          ) : waypoints?.length > 0 ? (
-            waypoints.map((waypoint, idx) => (
+          ) : fetchedWaypoints?.length > 0 ? (
+            fetchedWaypoints.map((waypoint, idx) => (
               <ItemTaskToDo
                 key={idx}
                 order={idx + 1}
