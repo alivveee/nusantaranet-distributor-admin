@@ -1,11 +1,11 @@
-import { Waypoint } from "@/lib/types";
+import { Waypoint } from '@/lib/types';
 
 interface RouteResult {
   route: Waypoint[];
   distance: number;
 }
 
-const popSize = 128;
+const popSize = 200;
 const numIterations = 10000;
 const mutChance = 0.2;
 
