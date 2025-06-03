@@ -5,7 +5,7 @@ interface RouteResult {
   distance: number;
 }
 
-const popSize = 200;
+const popSize = 150;
 const numIterations = 10000;
 const mutChance = 0.2;
 
