@@ -32,7 +32,7 @@ const TaskDetail: React.FC<TaskDetailProps> = ({ task, order }) => {
         <div className="ml-3">{task.task_info.customer.name}</div>
       </div>
       <div className="flex gap-4">
-        <div className="flex flex-col gap-3 w-[200px]">
+        <div className="flex flex-col gap-1 w-[200px]">
           <InfoItem title="Alamat">
             <p className="text-sm">{task.task_info.customer.address}</p>
           </InfoItem>
