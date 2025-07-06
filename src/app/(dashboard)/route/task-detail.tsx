@@ -93,7 +93,7 @@ const TaskDetail: React.FC<TaskDetailProps> = ({ task, order }) => {
           </InfoItem>
           <InfoItem title="Keterangan">
             <p className="text-sm">
-              {task.recipient ? task.recipient : 'owner tidak ada/gudang tutup'}
+              {task.recipient ? task.recipient : '-'}
             </p>
           </InfoItem>
           <InfoItem title="Daftar Produk">

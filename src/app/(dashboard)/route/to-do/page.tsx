@@ -13,6 +13,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { Waypoint } from '@/lib/types';
+import { is } from 'date-fns/locale';
 
 const routeSchema = z.object({
   asignee_id: z.string().nonempty('Penerima tugas harus diisi'),
@@ -21,12 +22,14 @@ const routeSchema = z.object({
 type RouteForm = z.infer<typeof routeSchema>;
 
 export default function ToDoRoutePage() {
-  const [isPending, startTransition] = useTransition();
   const [fetchedWaypoints, setFetchedWaypoints] = useState<Waypoint[]>([]);
   const { setSelectedRoute, setWaypoints, waypoints } = useRouteStore();
   const [asigneeOptions, setAsigneeOptions] = useState<
     { value: string; label: string }[] | undefined
   >([]);
+
+  const [isSubmitting, startSubmitting] = useTransition();
+  const [isOptimizing, startOptimizing] = useTransition();
 
   const methods = useForm<RouteForm>({
     resolver: zodResolver(routeSchema),
@@ -62,7 +65,7 @@ export default function ToDoRoutePage() {
   }, [fetchedWaypoints, setWaypoints]);
 
   const onSubmit = (data: RouteForm) => {
-    startTransition(async () => {
+    startSubmitting(async () => {
       const { error } = JSON.parse(await addRoute(data, waypoints));
 
       if (error) {
@@ -79,7 +82,7 @@ export default function ToDoRoutePage() {
   };
 
   const handleOptimateRoute = () => {
-    startTransition(async () => {
+    startOptimizing(async () => {
       const { route, distance } = await calculateOptimalRoute(fetchedWaypoints);
       setWaypoints(route);
       console.log('Jarak total: ', distance, ' km');
@@ -141,10 +144,10 @@ export default function ToDoRoutePage() {
               >
                 Optimalkan{' '}
                 <AiOutlineLoading3Quarters
-                  className={cn('animate-spin', { hidden: !isPending })}
+                  className={cn('animate-spin', { hidden: !isOptimizing })}
                 />
               </Button>
-              <Button disabled={isPending || waypoints?.length < 1}>
+              <Button disabled={isSubmitting || waypoints?.length < 1}>
                 Tugaskan
               </Button>
             </div>
