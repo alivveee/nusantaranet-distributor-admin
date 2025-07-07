@@ -46,11 +46,9 @@ export async function readWaypoints() {
     .eq('status', 'dibuat');
 
   const waypoints = result.data?.map((data) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const [lat, lon] = data.customer.coordinate.split(',').map(Number);
     return {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       name: data.customer.name,
       task_id: data.id,

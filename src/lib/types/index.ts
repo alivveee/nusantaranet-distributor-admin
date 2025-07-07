@@ -52,6 +52,7 @@ export type ITask = {
 export type TaskInfo = {
   task_info: ITask;
   recipient: string | null;
+  note: string | null;
   completed_coord: { latitude: number; longitude: number } | undefined;
   completed_at: string | null;
   products: ITaskProduct[];
