@@ -51,10 +51,10 @@ const InputField: React.FC<InputFieldProps> = ({
                 type={type}
                 placeholder={placeholder}
                 defaultValue={defaultValue}
-                className={iconButton ? 'pr-12' : ''} // Berikan padding-right jika ada ikon
+                className={iconButton ? 'pr-12' : ''} 
                 {...field}
               />
-              {/* Button Ikon */}
+              {/* Button Icon */}
               {iconButton && (
                 <Button
                   type="button"
