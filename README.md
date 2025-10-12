@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🗺️ Nusantara Network Route Planner - Web (Admin Dashboard)
 
-## Getting Started
+A web-based information system for managing distribution routes, field assignments, and customer data at **PT Nusantara Network**.  
+This system allows administrators to plan the shortest delivery routes automatically using a **Genetic Algorithm**, track field employees in real time, and manage business data efficiently.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- 🔐 **Authentication System** for admin and employees  
+- 📍 **Automatic Shortest Route Planning** using Genetic Algorithm + Google Distance Matrix API  
+- 👨‍💼 **Task Assignment Management** (create, edit, track employee tasks)  
+- 🗂️ **Customer & Product Database Management**  
+- 📊 **Route History & Performance Reports**  
+- 🛰️ **Real-time Employee Tracking**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Frontend:** NextJS, TypeScript, ShadcnUI 
+- **Backend:** Supabase (PostgreSQL + Auth + Storage)  
+- **Mapping API:** Google Maps Distance Matrix API  
+- **State Management:** Zustand  
+- **Deployment:** Vercel  
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🧩 System Architecture
 
-## Learn More
+The web app serves as the **Admin Dashboard**, responsible for:
+- Creating and assigning routes to field staff  
+- Monitoring task progress  
+- Viewing route optimization results  
 
-To learn more about Next.js, take a look at the following resources:
+It communicates with the mobile client via RESTful API and Supabase backend.
+(https://github.com/alivveee/nusantara-network-staff)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ⚙️ Installation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Clone the repository  
+   ```bash
+   git clone https://github.com/alivveee/nusantara-network-admin.git
+   cd nusantara-network-admin
+2. Install dependencies
+   ```bash
+   npm install
+3. Set up environment variables (.env)
+    ```bash
+   NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=
+   NEXT_PUBLIC_SUPABASE_URL=
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=
+   SERVICE_ROLE_KEY=
+4. Run the development server
+   ```bash
+   npm run dev
+5. Build for production
+   ```bash
+   npm run build
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
