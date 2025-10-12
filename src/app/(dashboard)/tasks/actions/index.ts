@@ -101,8 +101,6 @@ export async function deleteTask(id: string) {
 }
 
 export async function readTasks() {
-  unstable_noStore();
-
   const supabase = await createClient();
   const result = await supabase
     .from('tasks')
