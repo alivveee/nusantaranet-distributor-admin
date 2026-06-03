@@ -1,10 +1,10 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import ItemTaskToDo from './components/item-task-todo';
+import ItemTaskToDo from './_components/item-task-todo';
 import { useEffect, useState, useTransition } from 'react';
-import calculateOptimalRoute from '../algorithm/genetic-algorithm-tsp';
+import calculateOptimalRoute from '../_algorithm/_genetic-algorithm-tsp';
 import useRouteStore from '../_store/useRouteStore';
-import addRoute, { readAsigneeOptions, readWaypoints } from './actions';
+import addRoute, { readAsigneeOptions, readWaypoints } from './_actions';
 import { z } from 'zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';

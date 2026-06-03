@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import LoginForm from './components/login-form';
+import LoginForm from './_components/login-form';
 import { redirect } from 'next/navigation';
 import readUserSession from '@/lib/actions';
 export default async function LoginPage() {

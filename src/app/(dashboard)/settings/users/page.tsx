@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import MainContainer from '../../main-container';
-import AddUserDialog from './components/add-dialog';
-import UsersTable from './components/users-table';
+import AddUserDialog from './_components/add-dialog';
+import UsersTable from './_components/users-table';
 import TableSkeleton from '@/components/table-skeleton';
 
 export default function UsersPage() {

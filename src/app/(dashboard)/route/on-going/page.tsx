@@ -2,8 +2,8 @@
 import { IRoute } from '@/lib/types';
 import { useEffect, useMemo, useState } from 'react';
 import useRouteStore from '../_store/useRouteStore';
-import { readRoutes, readWaypoints } from './actions';
-import ItemRouteOnGoing from './components/item-route-ongoing';
+import { readRoutes, readWaypoints } from './_actions';
+import ItemRouteOnGoing from './_components/item-route-ongoing';
 import { createClient } from '@/lib/supabase/client';
 import { RealtimePostgresChangesPayload } from '@supabase/supabase-js';
 

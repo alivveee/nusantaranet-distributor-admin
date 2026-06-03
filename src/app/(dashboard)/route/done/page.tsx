@@ -1,9 +1,9 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
-import ItemRouteDone from './components/item-route-done';
+import ItemRouteDone from './_components/item-route-done';
 import useRouteStore from '../_store/useRouteStore';
 import { IRoute } from '@/lib/types';
-import { readRoutes, readWaypoints } from './actions';
+import { readRoutes, readWaypoints } from './_actions';
 
 export default function DoneRoutePage() {
   const [fetchedRoutes, setFetchedRoutes] = useState<IRoute[]>([]);

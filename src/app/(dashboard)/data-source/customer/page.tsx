@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import MainContainer from '../../main-container';
-import AddCustomerDialog from './components/add-dialog';
-import CustomersTable from './components/customers-table';
+import AddCustomerDialog from './_components/add-dialog';
+import CustomersTable from './_components/customers-table';
 import TableSkeleton from '@/components/table-skeleton';
 
 export default function TaskPage() {

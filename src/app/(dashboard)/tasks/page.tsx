@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
-import TaskTable from './components/task-table';
+import TaskTable from './_components/task-table';
 import MainContainer from '../main-container';
-import AddTaskDialog from './components/add-dialog';
+import AddTaskDialog from './_components/add-dialog';
 import TableSkeleton from '../../../components/table-skeleton';
 
 export default function TaskPage() {
